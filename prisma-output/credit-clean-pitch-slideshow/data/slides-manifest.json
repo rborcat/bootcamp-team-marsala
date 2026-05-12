@@ -1,0 +1,16 @@
+{
+  "slides": [
+    { "index": 1, "type": "title", "title": "Credit Clean" },
+    { "index": 2, "type": "headline-bullets", "title": "The Problem" },
+    { "index": 3, "type": "quote", "title": "Customer Voice" },
+    { "index": 4, "type": "headline-bullets", "title": "The Solution" },
+    { "index": 5, "type": "big-stat", "title": "Market Size" },
+    { "index": 6, "type": "headline-bullets", "title": "How It Works" },
+    { "index": 7, "type": "chart", "title": "The Funnel Gap" },
+    { "index": 8, "type": "headline-bullets", "title": "Traction and Metrics" },
+    { "index": 9, "type": "headline-bullets", "title": "Business Model" },
+    { "index": 10, "type": "headline-bullets", "title": "Why Now" },
+    { "index": 11, "type": "headline-bullets", "title": "The Team" },
+    { "index": 12, "type": "closing", "title": "The Ask" }
+  ]
+}
