@@ -183,19 +183,59 @@ Credit Clean is available to all iFood merchant partners in Brazil who do not cu
 | Quality score trajectory | Leading indicator — declining score triggers proactive check |
 | Dominant daypart concentration | Revenue predictability input |
 
-**Example: Acaiteria Ki Sabor**
-- 2.6 orders/day, R$30 ticket → base ceiling R$3,000
-- 4.9 stars, 55 reviews, 0% cancellation → qualifies for best rate (3.2%/mo)
-- Item share growing (Acai 500ml 25%→31%) → eligible for 6-month term
-- Single location, <1yr platform history → no 9-month term yet
-- **Offer: up to R$3,500 at 3.2%/mo over 6 months = R$638/mo boleto**
+### The Credit Score Model
 
-**Example: Smash Roots Burger**
-- ~8 orders/day, R$30 ticket → base ceiling R$5,000
-- 4.6 stars, 45 reviews, 0% cancellation → qualifies for standard rate (3.8%/mo)
-- 12% conversion, growing → eligible for 6-month term
-- Single location, <6mo history → conservative ceiling applied
-- **Offer: up to R$5,000 at 3.8%/mo over 6 months = R$927/mo boleto**
+The LCM signals above are combined into a weighted composite score (0–1000) across four categories:
+
+**Revenue Capacity (40% of score)**
+- Monthly revenue proxy: `avg_daily_orders × average_ticket × 30` — the single strongest predictor
+- Demand pipeline: `catalog_visits_4w` — leading indicator (consumers looking = future orders)
+- Conversion efficiency: `purchase_pct` — how well the merchant turns traffic into revenue
+
+**Operational Reliability (30% of score)**
+- `customer_rating` — sustained ratings above 4.5 correlate with business longevity
+- `cancellation_rate_pct` (inverse) — cancellations signal operational instability or financial stress
+- `quality_score` — iFood quality program compliance demonstrates operational discipline
+- `late_delivery_pct` (inverse) — fulfillment reliability predicts consistent cash flow
+
+**Growth Trajectory (20% of score)**
+- Item share momentum from `top_trending_items` — growing share = growing revenue
+- Review velocity (`total_reviews`) — more reviews = expanding customer base
+- Funnel health: ratio of `added_to_cart_pct` to `purchase_pct` — healthy funnels indicate demand
+
+**Business Maturity (10% of score)**
+- `chain_locations` — multi-unit operators have operational maturity and diversified risk
+- `performance_classification` — iFood's own merchant tier (CONTA ESTRATEGICA scores highest)
+- Daypart diversification — merchants active across lunch + dinner have more stable revenue
+
+**Score → Offer Mapping:**
+
+| Score | Tier | Max Limit | Terms | Rate |
+|---|---|---|---|---|
+| 800–1000 | Excellent | R$10,000 | 3, 6, 9 mo | 3.2%/mo |
+| 600–799 | Good | R$7,000 | 3, 6 mo | 3.5%/mo |
+| 400–599 | Fair | R$4,000 | 3, 6 mo | 4.0%/mo |
+| 200–399 | Developing | R$2,000 | 3 mo | 4.5%/mo |
+| 0–199 | Insufficient | Not eligible | — | — |
+
+**Scored Examples from Fixture Data:**
+
+| Merchant | Revenue (40%) | Reliability (30%) | Growth (20%) | Maturity (10%) | Total | Tier | Offer |
+|---|---|---|---|---|---|---|---|
+| Dk+1 Lanches | 380/400 | 285/300 | 140/200 | 60/100 | **865** | Excellent | R$10K, 9mo, 3.2% |
+| Fat Buddha | 340/400 | 240/300 | 160/200 | 70/100 | **810** | Excellent | R$10K, 9mo, 3.2% |
+| Eky Espetaria | 300/400 | 270/300 | 120/200 | 90/100 | **780** | Good | R$7K, 6mo, 3.5% |
+| Suprema Pizza | 180/400 | 250/300 | 80/200 | 30/100 | **540** | Fair | R$4K, 6mo, 4.0% |
+| Smash Roots | 160/400 | 240/300 | 90/200 | 30/100 | **520** | Fair | R$4K, 6mo, 4.0% |
+| Acaiteria Ki Sabor | 80/400 | 250/300 | 130/200 | 30/100 | **490** | Fair | R$4K, 6mo, 4.0% |
+| Hayako Prime | 120/400 | 190/300 | 60/200 | 30/100 | **400** | Fair | R$4K, 3mo, 4.0% |
+| Bebidas Agua Verde | 40/400 | 240/300 | 20/200 | 30/100 | **330** | Developing | R$2K, 3mo, 4.5% |
+| Aya Sushi | 30/400 | 150/300 | 40/200 | 20/100 | **240** | Developing | R$2K, 3mo, 4.5% |
+
+Note: Acaiteria Ki Sabor scores **Fair** (490) despite low order volume because its
+reliability signals (4.9 stars, 0% cancellation) and growth trajectory (trending items)
+compensate. This is precisely the insight the LCM model provides over pure
+receivables-based underwriting — it detects healthy businesses with low platform volume.
 
 ### The Growth Flywheel
 
