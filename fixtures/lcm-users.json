@@ -1,0 +1,277 @@
+[
+  {
+    "frn_id": 3059469,
+    "merchant_id": "5ca3b360-3e9b-47c7-859b-deda86db4673",
+    "trading_name": "Fat Buddha Vila Mariana",
+    "city": "SAO PAULO",
+    "state": "SP",
+    "neighborhood": "Vila Mariana",
+    "cuisine": "Asiatica",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": 30.0,
+    "performance_classification": null,
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Fat Buddha Vila Mariana is an Asian fusion restaurant specializing in Japanese-inspired poultry dishes, notably Chicken Fried Rice and Orange Chicken Donburi, which dominate orders across all meal occasions. The menu boasts a wide array of bao, noodles, donburi bowls, and appetizers, with detailed recipe descriptions and in-house sauces that indicate a focus on authenticity and careful preparation. Despite a generally high customer rating (4.7) and excellent quality program score (5.0), operational reliability varies across time windows, and customer reviews note occasional issues with delivery speed and temperature consistency.",
+      "core_identity_and_culinary_positioning": "Asian fusion with Japanese influences, specializing in poultry (Chicken Fried Rice, Orange Chicken Donburi) and select pork options. Menu includes bao, noodles, donburi bowls, sando sandwiches, various styles of fried rice, and appetizers such as gyoza and tempura. Two vegan/vegetarian options: Fried Rice de Cogumelos e Brocolis and Berinjela Sando Veggie.",
+      "performance_and_commercial_health": {
+        "quality_score": 5.0,
+        "customer_rating": 4.7,
+        "total_reviews": 361,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 100,
+        "price_positioning": "VERY_CHEAP",
+        "min_order_value": 20.0,
+        "chain_locations": 3,
+        "dominant_daypart": "Dinner (62% of orders)",
+        "avg_daily_orders_dinner": 29.47
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": 11345,
+        "viewed_items_pct": 42.8,
+        "added_to_cart_pct": 15.2,
+        "checkout_pct": 14.9,
+        "purchase_pct": 10.4
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": 100,
+        "merchant_delivered_pct": 0,
+        "takeout_pct": 0,
+        "avg_gross_delivery_fee": 12.58,
+        "late_delivery_pct": 20.3,
+        "avg_delay_min": 13
+      },
+      "top_popular_items": [
+        "Chicken Fried Rice (1689 orders)",
+        "Orange Chicken Donburi (984 orders)",
+        "Gyoza (787 orders)",
+        "Fried Rice de Costela (645 orders)",
+        "Orange Chicken Bao (622 orders)"
+      ],
+      "top_trending_items": [
+        "Oferta do Mes: Karaage (share 2.44% -> 7.30%)",
+        "Sugestao do Chef: Orange Chicken Donburi (1.58% -> 4.81%)",
+        "Chicken Fried Rice (1.01% -> 2.52%)"
+      ]
+    }
+  },
+  {
+    "frn_id": 530136,
+    "merchant_id": "9bb2241e-7f01-4101-987a-4aa8ee8098bd",
+    "trading_name": "Eky Espetaria Metropole",
+    "city": "BELEM",
+    "state": "PA",
+    "neighborhood": "Coqueiro",
+    "cuisine": "Brasileira",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": 80.0,
+    "performance_classification": "CONTA ESTRATEGICA",
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Eky Espetaria Metropole is an expensive, high-quality Brazilian grill specializing in a variety of espetos served with traditional sides like farofa and vinagrete. The menu is distinctly focused on grilled meats and combos, with robust sales in lunch and dinner periods. While customer reviews rate the food high, critiques emphasize portion sizes and occasional delivery/service issues. Consistent operational performance in peak periods underpins the merchant's status as a top restaurant and exclusive platform partner.",
+      "core_identity_and_culinary_positioning": "Brazilian grilled skewers (espetinhos), batata dishes, juices, and smoothies. Menu centered around meat-focused grill with espetos (file, frango, mista, alcatra, coracao, lingua, picanha) served with farofa and vinagrete. Includes combos, batata recheada, and sides like arroz branco and macaxeira frita. Predominantly meat-based with marginal vegetable options.",
+      "performance_and_commercial_health": {
+        "quality_score": 5.0,
+        "customer_rating": 4.8,
+        "total_reviews": null,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 100,
+        "price_positioning": "EXPENSIVE",
+        "min_order_value": 20.0,
+        "chain_locations": 9,
+        "dominant_daypart": "Lunch (60%) and Dinner (32%)",
+        "avg_daily_orders_lunch": 18.08
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": 5837,
+        "viewed_items_pct": 61.8,
+        "added_to_cart_pct": 31.9,
+        "checkout_pct": 30.4,
+        "purchase_pct": 15.1
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": 100,
+        "merchant_delivered_pct": 0,
+        "takeout_pct": 0,
+        "avg_gross_delivery_fee": 12.48,
+        "late_delivery_pct": 11.7,
+        "avg_delay_min": 11
+      },
+      "top_popular_items": [
+        "Espeto File (957 orders)",
+        "Combo Espeto 2 (659 orders)",
+        "Combo Espeto 3 (578 orders)",
+        "Espeto Frango (429 orders)",
+        "Batata Frita Porcao (413 orders)"
+      ],
+      "top_trending_items": [
+        "Combo Espeto 2 (share 6.17% -> 6.91%)",
+        "Batata Frita Porcao (3.82% -> 4.54%)",
+        "Espeto Misto (3.28% -> 3.85%)"
+      ]
+    }
+  },
+  {
+    "frn_id": 2758331,
+    "merchant_id": "ad257f6c-5b25-46f0-8fa1-92bc85c398ed",
+    "trading_name": "Aya Sushi",
+    "city": "RECIFE",
+    "state": "PE",
+    "neighborhood": "Varzea",
+    "cuisine": "Japonesa",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": 30.0,
+    "performance_classification": "LONG TAIL",
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Aya Sushi is a very low-cost Japanese restaurant specializing in a wide array of sushi-style dishes. Despite an extensive sushi-focused menu with popular items like Carioca de Camarao and an emerging hit in Temaki de Salmao Natural, the operational execution is critically inconsistent. All orders occur during dinner, yet planned dinner slots are fulfilled at only a fraction of scheduled hours. The low daily order volume and lack of customer reviews further suggest operational and scale challenges.",
+      "core_identity_and_culinary_positioning": "Japanese cuisine with emphasis on sushis, sashimis, and temakis. Menu also includes enroladinhos and poke bowls. Strong emphasis on sushi-style dishes prepared in various formats (carioca, temaki, uramaki, sushi dog) with standardized accompaniments (hashi, molhos Shoyu, and Teriake). One vegetarian option (Rolinho Primaveira Vegetariano).",
+      "performance_and_commercial_health": {
+        "quality_score": null,
+        "customer_rating": null,
+        "total_reviews": 0,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 60,
+        "price_positioning": "VERY_CHEAP",
+        "min_order_value": 15.0,
+        "chain_locations": 1,
+        "dominant_daypart": "Dinner (100% of orders)",
+        "avg_daily_orders_dinner": 1.13
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": 9,
+        "viewed_items_pct": 44.4,
+        "added_to_cart_pct": 22.2,
+        "checkout_pct": 22.2,
+        "purchase_pct": 11.1
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": 22,
+        "merchant_delivered_pct": 78,
+        "takeout_pct": 0,
+        "avg_gross_delivery_fee": 7.55,
+        "late_delivery_pct": 0.0,
+        "avg_delay_min": 0
+      },
+      "top_popular_items": [
+        "Carioca de Camarao (2 orders)",
+        "Clone de Temaki Empanado Camarao (1 order)",
+        "Mini Dog de Salmao (1 order)",
+        "Temaki de Camarao Recheio Empanado (1 order)",
+        "Temaki de Salmao Natural (1 order)"
+      ],
+      "top_trending_items": [
+        "Temaki de Salmao Natural (share 0% -> 100%)"
+      ]
+    }
+  },
+  {
+    "frn_id": 21425,
+    "merchant_id": "02c22397-5e40-40c0-85bb-7e02a768a174",
+    "trading_name": "Dk+1 Lanches e Pizzas",
+    "city": "UBERABA",
+    "state": "MG",
+    "neighborhood": "Olinda",
+    "cuisine": "Pizza",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": 60.0,
+    "performance_classification": "CONTA ESTRATEGICA",
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Dk+1 Lanches e Pizzas is a top-rated restaurant with a diverse and detailed menu that centers on hamburgers, pizzas, and esfihas served primarily at dinner. The menu spans small items (esfirras) to extensive combos (e.g., family portions), with detailed ingredient lists that provide clarity on offerings. Although the average delivery time is relatively long (70 minutes), the restaurant's Super Quality score (5.0) and low cancellation rate ensure reliable service.",
+      "core_identity_and_culinary_positioning": "Brazilian fast-casual with a mix of burger, pizza, and Middle Eastern-inspired esfihas. Menu spans traditional esfihas (frango desfiado, carne moida, presunto com catupiry), artisanal hamburgers (X-tudo, Dk Bacon), and pizzas. No items explicitly branded as vegan, vegetarian, or lactose-free.",
+      "performance_and_commercial_health": {
+        "quality_score": 5.0,
+        "customer_rating": 4.9,
+        "total_reviews": 703,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 70,
+        "price_positioning": "MODERATE",
+        "min_order_value": null,
+        "chain_locations": 1,
+        "dominant_daypart": "Dinner (97% of orders)",
+        "avg_daily_orders_dinner": 50
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": 5851,
+        "viewed_items_pct": 53.8,
+        "added_to_cart_pct": 35.8,
+        "checkout_pct": 35.6,
+        "purchase_pct": 24.3
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": 0,
+        "merchant_delivered_pct": 95,
+        "takeout_pct": 5,
+        "avg_gross_delivery_fee": 8.74,
+        "late_delivery_pct": 0.0,
+        "avg_delay_min": 0
+      },
+      "top_popular_items": [
+        "X-tudo (438 orders)",
+        "Frango tudo (373 orders)",
+        "Combo Dk Bacon (313 orders)"
+      ],
+      "top_trending_items": [
+        "Esfirra de Palmito com Catupiry (share 0.08% -> 0.19%)",
+        "Dk Classico (0.67% -> 0.78%)",
+        "Combo Dk Salada (0.58% -> 0.68%)"
+      ]
+    }
+  },
+  {
+    "frn_id": 2992974,
+    "merchant_id": "6fde0ff9-92e2-47bf-a533-e74d272c979a",
+    "trading_name": "Acaiteria Ki Sabor",
+    "city": "PORTO VELHO",
+    "state": "RO",
+    "neighborhood": "Mariana",
+    "cuisine": "Acai",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": 30.0,
+    "performance_classification": "LONG TAIL",
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Acaiteria Ki Sabor is a primarily acai-focused establishment with a menu rich in customizable acai desserts offered in various sizes and combo formats. Dinner orders dominate while lunch and snack sessions also contribute significantly. Despite a strong customer satisfaction rating (4.9/5) and positive feedback about taste and portion size, operational inconsistencies and a long average delivery time (60 minutes) are points of concern.",
+      "core_identity_and_culinary_positioning": "Acai specialty restaurant with a wide range of acai preparations. Products include single-portion acai drinks (350ml, 500ml, 700ml) and combo meals featuring leite condensado, pacoca, leite em po, granola, and assorted fruits. Customizable 'Monte o Seu Acai' offerings. Most items incorporate dairy ingredients; no explicit vegan/lactose-free labeling.",
+      "performance_and_commercial_health": {
+        "quality_score": 1.0,
+        "customer_rating": 4.9,
+        "total_reviews": 55,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 60,
+        "price_positioning": "VERY_CHEAP",
+        "min_order_value": null,
+        "chain_locations": 1,
+        "dominant_daypart": "Dinner (63% of orders)",
+        "avg_daily_orders": 2.64
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": 768,
+        "viewed_items_pct": 71.6,
+        "added_to_cart_pct": 43.1,
+        "checkout_pct": 41.4,
+        "purchase_pct": 9.9
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": 0,
+        "merchant_delivered_pct": 89,
+        "takeout_pct": 11,
+        "avg_gross_delivery_fee": 7.19,
+        "late_delivery_pct": 0.0,
+        "avg_delay_min": 0
+      },
+      "top_popular_items": [
+        "Acai de 700ml (99 orders)",
+        "Acai de 500ml (84 orders)",
+        "Acai Simples 500ml (42 orders)",
+        "Acai de 350ml (23 orders)",
+        "Acai com salada de fruta de 700ml (12 orders)"
+      ],
+      "top_trending_items": [
+        "Acai Simples 500ml (share 11.49% -> 17.60%)",
+        "Acai de 500ml (25.86% -> 31.20%)"
+      ]
+    }
+  }
+]
