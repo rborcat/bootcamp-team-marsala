@@ -273,5 +273,197 @@
         "Acai de 500ml (25.86% -> 31.20%)"
       ]
     }
+  },
+  {
+    "frn_id": 1228199,
+    "merchant_id": null,
+    "trading_name": "Suprema Pizza Delivery",
+    "city": "LUCAS DO RIO VERDE",
+    "state": "MT",
+    "neighborhood": "Cidade Nova",
+    "cuisine": "Pizza",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": null,
+    "performance_classification": null,
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Budget dinner-only pizzeria in Mato Grosso interior. Pizza sizes from 4 to 24 slices with customizable flavor combos. 100% merchant-delivered. Weekend peak with 74% of orders.",
+      "core_identity_and_culinary_positioning": "Pizza delivery with customizable multi-flavor options across multiple sizes (4 to 24 slices). Budget-oriented, dinner-exclusive operation with strong weekend concentration.",
+      "performance_and_commercial_health": {
+        "quality_score": 4.0,
+        "customer_rating": 4.8,
+        "total_reviews": 122,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 50,
+        "price_positioning": "VERY_CHEAP",
+        "min_order_value": null,
+        "chain_locations": 1,
+        "dominant_daypart": "Dinner (100% of orders)",
+        "avg_daily_orders": null
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": null,
+        "viewed_items_pct": null,
+        "added_to_cart_pct": null,
+        "checkout_pct": null,
+        "purchase_pct": 14.8
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": 0,
+        "merchant_delivered_pct": 100,
+        "takeout_pct": 0,
+        "avg_gross_delivery_fee": null,
+        "late_delivery_pct": null,
+        "avg_delay_min": null
+      },
+      "top_popular_items": [
+        "Grande 3 Sabores (12 fatias)"
+      ],
+      "top_trending_items": []
+    }
+  },
+  {
+    "frn_id": 588545,
+    "merchant_id": null,
+    "trading_name": "Hayako Prime",
+    "city": "RECIFE",
+    "state": "PE",
+    "neighborhood": "Imbiribeira",
+    "cuisine": "Japonesa",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": null,
+    "performance_classification": null,
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Upscale Japanese restaurant in Recife. Extensive sushi/sashimi/temaki menu with combo options. Also offers yakissoba and risotos. Located near the airport in Imbiribeira.",
+      "core_identity_and_culinary_positioning": "Premium Japanese cuisine featuring sushi, sashimi, temaki, yakissoba, and risotos. Combo-oriented with multi-piece options (e.g., Combo 40 peças). Higher price positioning targeting dinner occasions.",
+      "performance_and_commercial_health": {
+        "quality_score": 4.0,
+        "customer_rating": 4.5,
+        "total_reviews": 80,
+        "cancellation_rate_pct": 2.5,
+        "avg_delivery_time_min": 50,
+        "price_positioning": "EXPENSIVE",
+        "min_order_value": null,
+        "chain_locations": 1,
+        "dominant_daypart": "Dinner (dominant)",
+        "avg_daily_orders": null
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": null,
+        "viewed_items_pct": null,
+        "added_to_cart_pct": null,
+        "checkout_pct": null,
+        "purchase_pct": 8.0
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": null,
+        "merchant_delivered_pct": null,
+        "takeout_pct": null,
+        "avg_gross_delivery_fee": null,
+        "late_delivery_pct": null,
+        "avg_delay_min": null
+      },
+      "top_popular_items": [
+        "Combo 40 peças"
+      ],
+      "top_trending_items": []
+    }
+  },
+  {
+    "frn_id": 3144766,
+    "merchant_id": null,
+    "trading_name": "Smash Roots Burger",
+    "city": "LUZIANIA",
+    "state": "GO",
+    "neighborhood": "Sao Caetano",
+    "cuisine": "Hamburger",
+    "merchant_category": "RESTAURANT",
+    "average_ticket": null,
+    "performance_classification": null,
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Artisanal smash burger joint in Luziânia (Greater Brasília metro area). 110g/140g beef patties, heavy cheddar, bacon variations. Combos with batata and soft drinks.",
+      "core_identity_and_culinary_positioning": "Artisanal smash burgers with 110g/140g beef patties, cheddar-heavy builds, and bacon variations. Combo-oriented menu with batata frita and soft drinks. Dinner-dominant, single-location operation.",
+      "performance_and_commercial_health": {
+        "quality_score": 4.0,
+        "customer_rating": 4.6,
+        "total_reviews": 45,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 60,
+        "price_positioning": "VERY_CHEAP",
+        "min_order_value": null,
+        "chain_locations": 1,
+        "dominant_daypart": "Dinner (dominant)",
+        "avg_daily_orders": null
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": null,
+        "viewed_items_pct": null,
+        "added_to_cart_pct": null,
+        "checkout_pct": null,
+        "purchase_pct": 12.0
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": null,
+        "merchant_delivered_pct": null,
+        "takeout_pct": null,
+        "avg_gross_delivery_fee": null,
+        "late_delivery_pct": null,
+        "avg_delay_min": null
+      },
+      "top_popular_items": [
+        "Smash Triple"
+      ],
+      "top_trending_items": []
+    }
+  },
+  {
+    "frn_id": 1425000,
+    "merchant_id": null,
+    "trading_name": "Bebidas Agua Verde",
+    "city": "CURITIBA",
+    "state": "PR",
+    "neighborhood": "Agua Verde",
+    "cuisine": "Bebidas",
+    "merchant_category": "MARKET",
+    "average_ticket": null,
+    "performance_classification": null,
+    "lcm_generation_date": "2026-01-14",
+    "lcm_profile": {
+      "executive_merchant_summary": "Beverage-focused shop in Água Verde, Curitiba. Sells beer packs, wines, spirits (gin, vodka, cachaça). Single food item (Pão com Linguiça) as complement. Near Arena da Baixada stadium.",
+      "core_identity_and_culinary_positioning": "Beverage retail specializing in beer packs, wines, and spirits (gin, vodka, cachaça). Minimal food offering (single item: Pão com Linguiça). Evening-focused operation near sports venue.",
+      "performance_and_commercial_health": {
+        "quality_score": 4.0,
+        "customer_rating": 5.0,
+        "total_reviews": 4,
+        "cancellation_rate_pct": 0.0,
+        "avg_delivery_time_min": 44,
+        "price_positioning": "VERY_CHEAP",
+        "min_order_value": null,
+        "chain_locations": 1,
+        "dominant_daypart": "Evening",
+        "avg_daily_orders": null
+      },
+      "customer_conversion_funnel": {
+        "catalog_visits_4w": null,
+        "viewed_items_pct": null,
+        "added_to_cart_pct": null,
+        "checkout_pct": null,
+        "purchase_pct": 5.0
+      },
+      "delivery_and_fulfillment": {
+        "ifood_delivered_pct": null,
+        "merchant_delivered_pct": null,
+        "takeout_pct": null,
+        "avg_gross_delivery_fee": null,
+        "late_delivery_pct": null,
+        "avg_delay_min": null
+      },
+      "top_popular_items": [
+        "Fardo Stella Artois"
+      ],
+      "top_trending_items": []
+    }
   }
 ]
