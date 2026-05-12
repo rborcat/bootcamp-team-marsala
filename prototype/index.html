@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#EA1D2C">
+<title>Credit Clean — iFood Pago</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   iFood Pago Brand Identity — Credit Clean Prototype
+   ══════════════════════════════════════════════════════ */
+:root {
+  --red: #EA1D2C;
+  --red-dark: #C41522;
+  --red-light: #FDE8EA;
+  --cream: #F5F0EB;
+  --white: #FFFFFF;
+  --dark: #404040;
+  --gray: #757575;
+  --gray-light: #E0E0E0;
+  --gray-bg: #F8F8F8;
+  --green: #2E7D32;
+  --blue: #1565C0;
+  --yellow: #F9A825;
+  --orange: #E65100;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --radius-card: 12px;
+  --radius-btn: 24px;
+  --font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: var(--font-family);
+  background: var(--gray-bg);
+  color: var(--dark);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  width: 100%;
+  max-width: 390px;
+  min-height: 844px;
+  background: var(--white);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  background: var(--red);
+  color: var(--white);
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+}
+
+.header-logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.header-sub {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* Screens */
+.screen { display: none; padding: var(--spacing-md); }
+.screen.active { display: block; }
+
+/* Cards */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--gray-light);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--red);
+  color: var(--white);
+}
+
+.btn-primary:hover, .btn-primary:active {
+  background: var(--red-dark);
+}
+
+.btn-secondary {
+  background: var(--cream);
+  color: var(--dark);
+}
+
+.btn-secondary:hover, .btn-secondary:active {
+  background: var(--gray-light);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Progress indicator */
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-light);
+  transition: background 0.3s;
+}
+
+.progress-dot.active { background: var(--red); }
+.progress-dot.done { background: var(--green); }
+
+/* Merchant list */
+.merchant-list { list-style: none; }
+
+.merchant-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: 44px;
+  border-bottom: 1px solid var(--gray-light);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.merchant-item:hover, .merchant-item:active {
+  background: var(--cream);
+}
+
+.merchant-item:last-child { border-bottom: none; }
+
+.merchant-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.merchant-info { flex: 1; min-width: 0; }
+.merchant-name {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.merchant-city {
+  font-size: 12px;
+  color: var(--gray);
+}
+
+/* Score display */
+.score-hero {
+  text-align: center;
+  padding: var(--spacing-lg) 0;
+}
+
+.score-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 0 auto var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid;
+  transition: border-color 0.5s;
+}
+
+.score-circle.excellent { border-color: var(--green); }
+.score-circle.good { border-color: var(--blue); }
+.score-circle.fair { border-color: var(--yellow); }
+.score-circle.developing { border-color: var(--orange); }
+.score-circle.insufficient { border-color: var(--gray-light); }
+
+.score-value {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+.tier-badge {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: var(--radius-btn);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tier-badge.excellent { background: #E8F5E9; color: var(--green); }
+.tier-badge.good { background: #E3F2FD; color: var(--blue); }
+.tier-badge.fair { background: #FFF8E1; color: #F57F17; }
+.tier-badge.developing { background: #FFF3E0; color: var(--orange); }
+.tier-badge.insufficient { background: var(--gray-light); color: var(--gray); }
+
+/* Category bars */
+.category-list { margin-top: var(--spacing-lg); }
+
+.category-item { margin-bottom: var(--spacing-sm); }
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.category-name { font-weight: 600; }
+.category-score { color: var(--gray); }
+
+.category-bar {
+  height: 8px;
+  background: var(--gray-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.category-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s ease-out;
+}
+
+.category-fill.revenue { background: var(--red); }
+.category-fill.reliability { background: var(--blue); }
+.category-fill.growth { background: var(--green); }
+.category-fill.maturity { background: var(--orange); }
+
+/* Offer screen */
+.offer-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.offer-amount {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--red);
+}
+
+.offer-subtitle {
+  font-size: 13px;
+  color: var(--gray);
+  margin-top: 4px;
+}
+
+.term-options {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.term-btn {
+  flex: 1;
+  min-width: 80px;
+  min-height: 44px;
+  border: 2px solid var(--gray-light);
+  border-radius: var(--radius-card);
+  background: var(--white);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+  padding: var(--spacing-xs);
+}
+
+.term-btn.selected {
+  border-color: var(--red);
+  background: var(--red-light);
+}
+
+.rate-display {
+  text-align: center;
+  padding: var(--spacing-md);
+  background: var(--cream);
+  border-radius: var(--radius-card);
+  margin-bottom: var(--spacing-md);
+}
+
+.rate-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.rate-label {
+  font-size: 12px;
+  color: var(--gray);
+}
+
+/* Terms screen */
+.terms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing-md);
+}
+
+.terms-table td {
+  padding: var(--spacing-sm) 0;
+  font-size: 14px;
+}
+
+.terms-table td:first-child {
+  color: var(--gray);
+  padding-right: var(--spacing-md);
+}
+
+.terms-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+}
+
+.terms-divider {
+  border-top: 1px solid var(--gray-light);
+  margin: var(--spacing-md) 0;
+}
+
+.terms-notice {
+  background: var(--cream);
+  border-radius: var(--radius-card);
+  padding: var(--spacing-md);
+  font-size: 12px;
+  color: var(--dark);
+  line-height: 1.5;
+}
+
+.terms-notice strong {
+  color: var(--red);
+}
+
+/* Not found / error states */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.empty-state-icon { font-size: 48px; margin-bottom: var(--spacing-md); }
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-text {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
+/* Insufficient tier */
+.insufficient-hints {
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--dark);
+}
+
+.insufficient-hints li {
+  margin-bottom: 4px;
+}
+
+/* Pago trust */
+.pago-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  font-size: 11px;
+  color: var(--gray);
+}
+
+.pago-trust-icon {
+  width: 16px;
+  height: 16px;
+  background: var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.screen.active { animation: fadeIn 0.3s ease-out; }
+
+@keyframes countUp {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.score-animated { animation: countUp 0.6s ease-out; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <div class="header-logo">Credit Clean</div>
+    <div class="header-sub">iFood Pago</div>
+  </div>
+
+  <!-- Screen 1: Merchant Selection -->
+  <div id="screen-select" class="screen active">
+    <div class="progress-bar">
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+    <h2 style="font-size:18px;font-weight:700;margin-bottom:4px">Escolha seu restaurante</h2>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:var(--spacing-md)">Selecione o estabelecimento para ver sua oferta de crédito</p>
+    <div class="card">
+      <ul id="merchantList" class="merchant-list"></ul>
+    </div>
+    <div id="selectError" style="display:none"></div>
+  </div>
+
+  <!-- Screen 2: Score Display -->
+  <div id="screen-score" class="screen">
+    <div class="progress-bar">
+      <div class="progress-dot done"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+    <div id="scoreContent"></div>
+    <button class="btn btn-primary" id="btnToOffer" style="margin-top:var(--spacing-lg)">Ver Oferta</button>
+    <div class="pago-trust">
+      <div class="pago-trust-icon">✓</div>
+      Crédito iFood Pago
+    </div>
+  </div>
+
+  <!-- Screen 3: Offer -->
+  <div id="screen-offer" class="screen">
+    <div class="progress-bar">
+      <div class="progress-dot done"></div>
+      <div class="progress-dot done"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+    </div>
+    <div id="offerContent"></div>
+    <div class="pago-trust">
+      <div class="pago-trust-icon">✓</div>
+      Crédito iFood Pago
+    </div>
+  </div>
+
+  <!-- Screen 4: Terms -->
+  <div id="screen-terms" class="screen">
+    <div class="progress-bar">
+      <div class="progress-dot done"></div>
+      <div class="progress-dot done"></div>
+      <div class="progress-dot done"></div>
+      <div class="progress-dot active"></div>
+    </div>
+    <div id="termsContent"></div>
+    <button class="btn btn-primary" id="btnRestart" style="margin-top:var(--spacing-lg)">Voltar ao início</button>
+    <div class="pago-trust">
+      <div class="pago-trust-icon">✓</div>
+      Crédito iFood Pago
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// LCM Fixture Data — bundled inline (no backend)
+// ══════════════════════════════════════════════════════
+var LCM_USERS = [{"frn_id":3059469,"merchant_id":"5ca3b360-3e9b-47c7-859b-deda86db4673","trading_name":"Fat Buddha Vila Mariana","city":"SAO PAULO","state":"SP","neighborhood":"Vila Mariana","cuisine":"Asiatica","merchant_category":"RESTAURANT","average_ticket":30,"performance_classification":null,"lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Fat Buddha Vila Mariana is an Asian fusion restaurant specializing in Japanese-inspired poultry dishes, notably Chicken Fried Rice and Orange Chicken Donburi, which dominate orders across all meal occasions.","core_identity_and_culinary_positioning":"Asian fusion with Japanese influences, specializing in poultry and select pork options.","performance_and_commercial_health":{"quality_score":5,"customer_rating":4.7,"total_reviews":361,"cancellation_rate_pct":0,"avg_delivery_time_min":100,"price_positioning":"VERY_CHEAP","min_order_value":20,"chain_locations":3,"dominant_daypart":"Dinner (62% of orders)","avg_daily_orders_dinner":29.47},"customer_conversion_funnel":{"catalog_visits_4w":11345,"viewed_items_pct":42.8,"added_to_cart_pct":15.2,"checkout_pct":14.9,"purchase_pct":10.4},"delivery_and_fulfillment":{"ifood_delivered_pct":100,"merchant_delivered_pct":0,"takeout_pct":0,"avg_gross_delivery_fee":12.58,"late_delivery_pct":20.3,"avg_delay_min":13},"top_popular_items":["Chicken Fried Rice (1689 orders)","Orange Chicken Donburi (984 orders)","Gyoza (787 orders)","Fried Rice de Costela (645 orders)","Orange Chicken Bao (622 orders)"],"top_trending_items":["Oferta do Mes: Karaage (share 2.44% -> 7.30%)","Sugestao do Chef: Orange Chicken Donburi (1.58% -> 4.81%)","Chicken Fried Rice (1.01% -> 2.52%)"]}},{"frn_id":530136,"merchant_id":"9bb2241e-7f01-4101-987a-4aa8ee8098bd","trading_name":"Eky Espetaria Metropole","city":"BELEM","state":"PA","neighborhood":"Coqueiro","cuisine":"Brasileira","merchant_category":"RESTAURANT","average_ticket":80,"performance_classification":"CONTA ESTRATEGICA","lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Eky Espetaria Metropole is an expensive, high-quality Brazilian grill specializing in a variety of espetos served with traditional sides.","core_identity_and_culinary_positioning":"Brazilian grilled skewers (espetinhos), batata dishes, juices, and smoothies.","performance_and_commercial_health":{"quality_score":5,"customer_rating":4.8,"total_reviews":null,"cancellation_rate_pct":0,"avg_delivery_time_min":100,"price_positioning":"EXPENSIVE","min_order_value":20,"chain_locations":9,"dominant_daypart":"Lunch (60%) and Dinner (32%)","avg_daily_orders_lunch":18.08},"customer_conversion_funnel":{"catalog_visits_4w":5837,"viewed_items_pct":61.8,"added_to_cart_pct":31.9,"checkout_pct":30.4,"purchase_pct":15.1},"delivery_and_fulfillment":{"ifood_delivered_pct":100,"merchant_delivered_pct":0,"takeout_pct":0,"avg_gross_delivery_fee":12.48,"late_delivery_pct":11.7,"avg_delay_min":11},"top_popular_items":["Espeto File (957 orders)","Combo Espeto 2 (659 orders)","Combo Espeto 3 (578 orders)","Espeto Frango (429 orders)","Batata Frita Porcao (413 orders)"],"top_trending_items":["Combo Espeto 2 (share 6.17% -> 6.91%)","Batata Frita Porcao (3.82% -> 4.54%)","Espeto Misto (3.28% -> 3.85%)"]}},{"frn_id":2758331,"merchant_id":"ad257f6c-5b25-46f0-8fa1-92bc85c398ed","trading_name":"Aya Sushi","city":"RECIFE","state":"PE","neighborhood":"Varzea","cuisine":"Japonesa","merchant_category":"RESTAURANT","average_ticket":30,"performance_classification":"LONG TAIL","lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Aya Sushi is a very low-cost Japanese restaurant specializing in a wide array of sushi-style dishes.","core_identity_and_culinary_positioning":"Japanese cuisine with emphasis on sushis, sashimis, and temakis.","performance_and_commercial_health":{"quality_score":null,"customer_rating":null,"total_reviews":0,"cancellation_rate_pct":0,"avg_delivery_time_min":60,"price_positioning":"VERY_CHEAP","min_order_value":15,"chain_locations":1,"dominant_daypart":"Dinner (100% of orders)","avg_daily_orders_dinner":1.13},"customer_conversion_funnel":{"catalog_visits_4w":9,"viewed_items_pct":44.4,"added_to_cart_pct":22.2,"checkout_pct":22.2,"purchase_pct":11.1},"delivery_and_fulfillment":{"ifood_delivered_pct":22,"merchant_delivered_pct":78,"takeout_pct":0,"avg_gross_delivery_fee":7.55,"late_delivery_pct":0,"avg_delay_min":0},"top_popular_items":["Carioca de Camarao (2 orders)","Clone de Temaki Empanado Camarao (1 order)","Mini Dog de Salmao (1 order)","Temaki de Camarao Recheio Empanado (1 order)","Temaki de Salmao Natural (1 order)"],"top_trending_items":["Temaki de Salmao Natural (share 0% -> 100%)"]}},{"frn_id":21425,"merchant_id":"02c22397-5e40-40c0-85bb-7e02a768a174","trading_name":"Dk+1 Lanches e Pizzas","city":"UBERABA","state":"MG","neighborhood":"Olinda","cuisine":"Pizza","merchant_category":"RESTAURANT","average_ticket":60,"performance_classification":"CONTA ESTRATEGICA","lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Dk+1 Lanches e Pizzas is a top-rated restaurant with a diverse and detailed menu that centers on hamburgers, pizzas, and esfihas.","core_identity_and_culinary_positioning":"Brazilian fast-casual with a mix of burger, pizza, and Middle Eastern-inspired esfihas.","performance_and_commercial_health":{"quality_score":5,"customer_rating":4.9,"total_reviews":703,"cancellation_rate_pct":0,"avg_delivery_time_min":70,"price_positioning":"MODERATE","min_order_value":null,"chain_locations":1,"dominant_daypart":"Dinner (97% of orders)","avg_daily_orders_dinner":50},"customer_conversion_funnel":{"catalog_visits_4w":5851,"viewed_items_pct":53.8,"added_to_cart_pct":35.8,"checkout_pct":35.6,"purchase_pct":24.3},"delivery_and_fulfillment":{"ifood_delivered_pct":0,"merchant_delivered_pct":95,"takeout_pct":5,"avg_gross_delivery_fee":8.74,"late_delivery_pct":0,"avg_delay_min":0},"top_popular_items":["X-tudo (438 orders)","Frango tudo (373 orders)","Combo Dk Bacon (313 orders)"],"top_trending_items":["Esfirra de Palmito com Catupiry (share 0.08% -> 0.19%)","Dk Classico (0.67% -> 0.78%)","Combo Dk Salada (0.58% -> 0.68%)"]}},{"frn_id":2992974,"merchant_id":"6fde0ff9-92e2-47bf-a533-e74d272c979a","trading_name":"Acaiteria Ki Sabor","city":"PORTO VELHO","state":"RO","neighborhood":"Mariana","cuisine":"Acai","merchant_category":"RESTAURANT","average_ticket":30,"performance_classification":"LONG TAIL","lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Acaiteria Ki Sabor is a primarily acai-focused establishment with a menu rich in customizable acai desserts.","core_identity_and_culinary_positioning":"Acai specialty restaurant with a wide range of acai preparations.","performance_and_commercial_health":{"quality_score":1,"customer_rating":4.9,"total_reviews":55,"cancellation_rate_pct":0,"avg_delivery_time_min":60,"price_positioning":"VERY_CHEAP","min_order_value":null,"chain_locations":1,"dominant_daypart":"Dinner (63% of orders)","avg_daily_orders":2.64},"customer_conversion_funnel":{"catalog_visits_4w":768,"viewed_items_pct":71.6,"added_to_cart_pct":43.1,"checkout_pct":41.4,"purchase_pct":9.9},"delivery_and_fulfillment":{"ifood_delivered_pct":0,"merchant_delivered_pct":89,"takeout_pct":11,"avg_gross_delivery_fee":7.19,"late_delivery_pct":0,"avg_delay_min":0},"top_popular_items":["Acai de 700ml (99 orders)","Acai de 500ml (84 orders)","Acai Simples 500ml (42 orders)","Acai de 350ml (23 orders)","Acai com salada de fruta de 700ml (12 orders)"],"top_trending_items":["Acai Simples 500ml (share 11.49% -> 17.60%)","Acai de 500ml (25.86% -> 31.20%)"]}},{"frn_id":1228199,"merchant_id":null,"trading_name":"Suprema Pizza Delivery","city":"LUCAS DO RIO VERDE","state":"MT","neighborhood":"Cidade Nova","cuisine":"Pizza","merchant_category":"RESTAURANT","average_ticket":null,"performance_classification":null,"lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Budget dinner-only pizzeria in Mato Grosso interior.","core_identity_and_culinary_positioning":"Pizza delivery with customizable multi-flavor options.","performance_and_commercial_health":{"quality_score":4,"customer_rating":4.8,"total_reviews":122,"cancellation_rate_pct":0,"avg_delivery_time_min":50,"price_positioning":"VERY_CHEAP","min_order_value":null,"chain_locations":1,"dominant_daypart":"Dinner (100% of orders)","avg_daily_orders":null},"customer_conversion_funnel":{"catalog_visits_4w":null,"viewed_items_pct":null,"added_to_cart_pct":null,"checkout_pct":null,"purchase_pct":14.8},"delivery_and_fulfillment":{"ifood_delivered_pct":0,"merchant_delivered_pct":100,"takeout_pct":0,"avg_gross_delivery_fee":null,"late_delivery_pct":null,"avg_delay_min":null},"top_popular_items":["Grande 3 Sabores (12 fatias)"],"top_trending_items":[]}},{"frn_id":588545,"merchant_id":null,"trading_name":"Hayako Prime","city":"RECIFE","state":"PE","neighborhood":"Imbiribeira","cuisine":"Japonesa","merchant_category":"RESTAURANT","average_ticket":null,"performance_classification":null,"lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Upscale Japanese restaurant in Recife.","core_identity_and_culinary_positioning":"Premium Japanese cuisine featuring sushi, sashimi, temaki, yakissoba, and risotos.","performance_and_commercial_health":{"quality_score":4,"customer_rating":4.5,"total_reviews":80,"cancellation_rate_pct":2.5,"avg_delivery_time_min":50,"price_positioning":"EXPENSIVE","min_order_value":null,"chain_locations":1,"dominant_daypart":"Dinner (dominant)","avg_daily_orders":null},"customer_conversion_funnel":{"catalog_visits_4w":null,"viewed_items_pct":null,"added_to_cart_pct":null,"checkout_pct":null,"purchase_pct":8},"delivery_and_fulfillment":{"ifood_delivered_pct":null,"merchant_delivered_pct":null,"takeout_pct":null,"avg_gross_delivery_fee":null,"late_delivery_pct":null,"avg_delay_min":null},"top_popular_items":["Combo 40 peças"],"top_trending_items":[]}},{"frn_id":3144766,"merchant_id":null,"trading_name":"Smash Roots Burger","city":"LUZIANIA","state":"GO","neighborhood":"Sao Caetano","cuisine":"Hamburger","merchant_category":"RESTAURANT","average_ticket":null,"performance_classification":null,"lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Artisanal smash burger joint in Luziânia.","core_identity_and_culinary_positioning":"Artisanal smash burgers with 110g/140g beef patties.","performance_and_commercial_health":{"quality_score":4,"customer_rating":4.6,"total_reviews":45,"cancellation_rate_pct":0,"avg_delivery_time_min":60,"price_positioning":"VERY_CHEAP","min_order_value":null,"chain_locations":1,"dominant_daypart":"Dinner (dominant)","avg_daily_orders":null},"customer_conversion_funnel":{"catalog_visits_4w":null,"viewed_items_pct":null,"added_to_cart_pct":null,"checkout_pct":null,"purchase_pct":12},"delivery_and_fulfillment":{"ifood_delivered_pct":null,"merchant_delivered_pct":null,"takeout_pct":null,"avg_gross_delivery_fee":null,"late_delivery_pct":null,"avg_delay_min":null},"top_popular_items":["Smash Triple"],"top_trending_items":[]}},{"frn_id":1425000,"merchant_id":null,"trading_name":"Bebidas Agua Verde","city":"CURITIBA","state":"PR","neighborhood":"Agua Verde","cuisine":"Bebidas","merchant_category":"MARKET","average_ticket":null,"performance_classification":null,"lcm_generation_date":"2026-01-14","lcm_profile":{"executive_merchant_summary":"Beverage-focused shop in Água Verde, Curitiba.","core_identity_and_culinary_positioning":"Beverage retail specializing in beer packs, wines, and spirits.","performance_and_commercial_health":{"quality_score":4,"customer_rating":5,"total_reviews":4,"cancellation_rate_pct":0,"avg_delivery_time_min":44,"price_positioning":"VERY_CHEAP","min_order_value":null,"chain_locations":1,"dominant_daypart":"Evening","avg_daily_orders":null},"customer_conversion_funnel":{"catalog_visits_4w":null,"viewed_items_pct":null,"added_to_cart_pct":null,"checkout_pct":null,"purchase_pct":5},"delivery_and_fulfillment":{"ifood_delivered_pct":null,"merchant_delivered_pct":null,"takeout_pct":null,"avg_gross_delivery_fee":null,"late_delivery_pct":null,"avg_delay_min":null},"top_popular_items":["Fardo Stella Artois"],"top_trending_items":[]}}];
+
+// ══════════════════════════════════════════════════════
+// Selectable merchants (filter: non-null merchant_id)
+// ══════════════════════════════════════════════════════
+var SELECTABLE_MERCHANTS = LCM_USERS.filter(function(m) {
+  return m.merchant_id !== null;
+});
+
+// ══════════════════════════════════════════════════════
+// Render merchant selection list
+// ══════════════════════════════════════════════════════
+function renderMerchantList() {
+  var list = document.getElementById('merchantList');
+  list.innerHTML = '';
+  SELECTABLE_MERCHANTS.forEach(function(m) {
+    var li = document.createElement('li');
+    li.className = 'merchant-item';
+    li.setAttribute('role', 'button');
+    li.tabIndex = 0;
+    li.innerHTML =
+      '<div class="merchant-avatar">' + (m.trading_name || '?').charAt(0) + '</div>' +
+      '<div class="merchant-info">' +
+        '<div class="merchant-name">' + m.trading_name + '</div>' +
+        '<div class="merchant-city">' + m.city + ', ' + m.state + '</div>' +
+      '</div>';
+    li.addEventListener('click', function() { selectMerchant(m.merchant_id); });
+    li.addEventListener('keydown', function(e) { if (e.key === 'Enter') selectMerchant(m.merchant_id); });
+    list.appendChild(li);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// Credit Scoring Engine
+// ══════════════════════════════════════════════════════
+
+// Normalize value to [0,1] range, treat null/undefined as 0
+function normalize(value, min, max) {
+  if (value === null || value === undefined) return 0;
+  if (max <= min) return 0;
+  var clamped = Math.min(Math.max(value, min), max);
+  return (clamped - min) / (max - min);
+}
+
+// Extract daily orders from profile (handles different field names)
+function getDailyOrders(profile) {
+  var ph = profile.performance_and_commercial_health;
+  if (ph.avg_daily_orders !== null && ph.avg_daily_orders !== undefined) return ph.avg_daily_orders;
+  var total = 0;
+  if (ph.avg_daily_orders_dinner !== null && ph.avg_daily_orders_dinner !== undefined) total += ph.avg_daily_orders_dinner;
+  if (ph.avg_daily_orders_lunch !== null && ph.avg_daily_orders_lunch !== undefined) total += ph.avg_daily_orders_lunch;
+  return total || 0;
+}
+
+// Revenue Capacity (40% weight)
+function computeRevenueScore(merchant) {
+  var p = merchant.lcm_profile;
+  var ph = p.performance_and_commercial_health;
+  var cf = p.customer_conversion_funnel;
+  var dailyOrders = getDailyOrders(p);
+  var ticket = merchant.average_ticket || 0;
+  var monthlyRevenue = dailyOrders * ticket * 30;
+  return normalize(monthlyRevenue, 0, 5000) * 0.25
+       + normalize(cf.catalog_visits_4w, 0, 15000) * 0.08
+       + normalize(cf.purchase_pct, 0, 30) * 0.07;
+}
+
+// Operational Reliability (30% weight)
+function computeReliabilityScore(merchant) {
+  var p = merchant.lcm_profile;
+  var ph = p.performance_and_commercial_health;
+  var df = p.delivery_and_fulfillment;
+  return normalize(ph.customer_rating, 0, 5) * 0.12
+       + (1 - normalize(ph.cancellation_rate_pct, 0, 10)) * 0.08
+       + normalize(ph.quality_score, 0, 5) * 0.05
+       + (1 - normalize(df.late_delivery_pct, 0, 30)) * 0.05;
+}
+
+// Growth Trajectory (20% weight)
+function computeGrowthScore(merchant) {
+  var p = merchant.lcm_profile;
+  var ph = p.performance_and_commercial_health;
+  var cf = p.customer_conversion_funnel;
+
+  // Trending momentum from top_trending_items
+  var trending = p.top_trending_items || [];
+  var momentum = 0;
+  for (var i = 0; i < trending.length; i++) {
+    var item = trending[i];
+    var match = item.match(/share\s+([\d.]+)%\s*->\s*([\d.]+)%/);
+    if (match) {
+      var from = parseFloat(match[1]) || 0;
+      var to = parseFloat(match[2]) || 0;
+      momentum += (to - from);
+    }
+  }
+  // Normalize momentum: max ~15% total share shift across items
+  var momentumNorm = normalize(momentum, 0, 15);
+
+  // Funnel health: ratio of added_to_cart to purchase
+  var funnelHealth = 0;
+  if (cf.added_to_cart_pct && cf.purchase_pct && cf.added_to_cart_pct > 0) {
+    // Higher purchase_pct relative to added_to_cart_pct = better funnel
+    var ratio = cf.purchase_pct / cf.added_to_cart_pct;
+    funnelHealth = Math.min(ratio, 1);
+  }
+
+  return momentumNorm * 0.10
+       + normalize(ph.total_reviews, 0, 800) * 0.05
+       + funnelHealth * 0.05;
+}
+
+// Business Maturity (10% weight)
+function computeMaturityScore(merchant) {
+  var p = merchant.lcm_profile;
+  var ph = p.performance_and_commercial_health;
+
+  // Classification bonus
+  var classBonus = 0;
+  var cls = merchant.performance_classification;
+  if (cls === 'CONTA ESTRATEGICA') classBonus = 1;
+  else if (cls === 'LONG TAIL') classBonus = 0.4;
+  else classBonus = 0.2; // null or unrecognized
+
+  // Daypart diversity: more dayparts = higher score
+  var dp = ph.dominant_daypart || '';
+  var dpLower = dp.toLowerCase();
+  var diversity = 0;
+  if (dpLower.indexOf('lunch') >= 0 && dpLower.indexOf('dinner') >= 0) diversity = 1;
+  else if (dpLower.indexOf(' and ') >= 0 || dpLower.indexOf('&') >= 0) diversity = 0.8;
+  else if (dpLower.indexOf(' or ') >= 0) diversity = 0.6;
+  else diversity = 0.3; // single daypart
+
+  return normalize(ph.chain_locations, 1, 10) * 0.04
+       + classBonus * 0.04
+       + diversity * 0.02;
+}
+
+// Compute credit score from LCM profile data
+function computeCreditScore(merchant) {
+  var revenue = computeRevenueScore(merchant);
+  var reliability = computeReliabilityScore(merchant);
+  var growth = computeGrowthScore(merchant);
+  var maturity = computeMaturityScore(merchant);
+  var score = Math.round((revenue + reliability + growth + maturity) * 1000);
+  score = Math.min(Math.max(score, 0), 1000);
+  return {
+    score: score,
+    revenue: Math.round(revenue * 1000),
+    reliability: Math.round(reliability * 1000),
+    growth: Math.round(growth * 1000),
+    maturity: Math.round(maturity * 1000),
+    tier: getTierForScore(score)
+  };
+}
+
+// Tier mapping per constitution
+var TIERS = [
+  { name: 'Excellent', minScore: 800, maxScore: 1000, maxLimit: 10000, terms: [3, 6, 9], rate: 0.032, tag: 'excellent' },
+  { name: 'Good', minScore: 600, maxScore: 799, maxLimit: 7000, terms: [3, 6], rate: 0.035, tag: 'good' },
+  { name: 'Fair', minScore: 400, maxScore: 599, maxLimit: 4000, terms: [3, 6], rate: 0.04, tag: 'fair' },
+  { name: 'Developing', minScore: 200, maxScore: 399, maxLimit: 2000, terms: [3], rate: 0.045, tag: 'developing' },
+  { name: 'Insufficient', minScore: 0, maxScore: 199, maxLimit: 0, terms: [], rate: 0, tag: 'insufficient' }
+];
+
+function getTierForScore(score) {
+  for (var i = 0; i < TIERS.length; i++) {
+    if (score >= TIERS[i].minScore && score <= TIERS[i].maxScore) {
+      return TIERS[i];
+    }
+  }
+  return TIERS[TIERS.length - 1];
+}
+
+// ══════════════════════════════════════════════════════
+// App State
+// ══════════════════════════════════════════════════════
+var appState = {
+  selectedMerchant: null,
+  creditResult: null,
+  selectedAmount: 0,
+  selectedTerm: 0,
+  currentScreen: 'select'
+};
+
+// ══════════════════════════════════════════════════════
+// Formatters
+// ══════════════════════════════════════════════════════
+function fmtBRL(value) {
+  return 'R$' + value.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function fmtPct(value) {
+  return value.toFixed(1).replace('.', ',') + '%';
+}
+
+function fmtRateMonthly(rate) {
+  return (rate * 100).toFixed(1).replace('.', ',') + '% ao mês';
+}
+
+function fmtRateWeekly(rate) {
+  return (rate * 100).toFixed(1).replace('.', ',') + '% por semana';
+}
+
+// ══════════════════════════════════════════════════════
+// Screen Navigation
+// ══════════════════════════════════════════════════════
+function showScreen(name) {
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) {
+    screens[i].classList.remove('active');
+  }
+  var target = document.getElementById('screen-' + name);
+  if (target) {
+    target.classList.add('active');
+    appState.currentScreen = name;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// Merchant Selection
+// ══════════════════════════════════════════════════════
+function selectMerchant(merchantId) {
+  var merchant = LCM_USERS.find(function(m) { return m.merchant_id === merchantId; });
+  if (!merchant) {
+    var err = document.getElementById('selectError');
+    err.style.display = 'block';
+    err.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-title">Estabelecimento não encontrado</div><div class="empty-state-text">O ID informado não corresponde a nenhum restaurante cadastrado.</div></div>';
+    err.className = 'card';
+    return;
+  }
+  document.getElementById('selectError').style.display = 'none';
+  appState.selectedMerchant = merchant;
+  appState.creditResult = computeCreditScore(merchant);
+  renderScoreScreen();
+  showScreen('score');
+}
+
+// ══════════════════════════════════════════════════════
+// Score Display
+// ══════════════════════════════════════════════════════
+function renderScoreScreen() {
+  var r = appState.creditResult;
+  var tier = r.tier;
+  var categories = [
+    { name: 'Capacidade de Receita', score: r.revenue, max: 400, cls: 'revenue' },
+    { name: 'Confiabilidade Operacional', score: r.reliability, max: 300, cls: 'reliability' },
+    { name: 'Trajetória de Crescimento', score: r.growth, max: 200, cls: 'growth' },
+    { name: 'Maturidade do Negócio', score: r.maturity, max: 100, cls: 'maturity' }
+  ];
+
+  var html = '<div class="score-hero">' +
+    '<div class="score-circle ' + tier.tag + '">' +
+      '<div class="score-value score-animated">' + r.score + '</div>' +
+      '<div class="score-label">de 1000 pontos</div>' +
+    '</div>' +
+    '<div class="tier-badge ' + tier.tag + '">' + tier.name + '</div>' +
+    '<p style="font-size:14px;font-weight:600;margin-top:8px">' + appState.selectedMerchant.trading_name + '</p>' +
+  '</div>';
+
+  html += '<h3 style="font-size:15px;margin-bottom:12px">Detalhamento da Pontuação</h3>';
+  html += '<div class="category-list">';
+  for (var i = 0; i < categories.length; i++) {
+    var cat = categories[i];
+    var pct = Math.round((cat.score / cat.max) * 100);
+    html += '<div class="category-item">' +
+      '<div class="category-header">' +
+        '<span class="category-name">' + cat.name + '</span>' +
+        '<span class="category-score">' + cat.score + '/' + cat.max + '</span>' +
+      '</div>' +
+      '<div class="category-bar">' +
+        '<div class="category-fill ' + cat.cls + '" style="width:' + pct + '%"></div>' +
+      '</div>' +
+    '</div>';
+  }
+  html += '</div>';
+
+  document.getElementById('scoreContent').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════
+// Offer Screen
+// ══════════════════════════════════════════════════════
+function renderOfferScreen() {
+  var tier = appState.creditResult.tier;
+  var m = appState.selectedMerchant;
+
+  if (tier.tag === 'insufficient') {
+    document.getElementById('offerContent').innerHTML =
+      '<div class="empty-state">' +
+        '<div class="empty-state-icon">📋</div>' +
+        '<div class="empty-state-title">Ainda não temos uma oferta para você</div>' +
+        '<div class="empty-state-text">Sua pontuação de crédito atual (' + appState.creditResult.score + ' pontos) está abaixo do mínimo necessário. Continue operando no iFood e melhorando seus indicadores!</div>' +
+        '<div style="margin-top:16px;text-align:left">' +
+          '<p style="font-size:13px;font-weight:600;margin-bottom:8px">O que pode ajudar:</p>' +
+          '<ul class="insufficient-hints">' +
+            '<li>📈 Aumente seu volume de pedidos diários</li>' +
+            '<li>⭐ Mantenha avaliações acima de 4.5</li>' +
+            '<li>📊 Melhore sua taxa de conversão</li>' +
+            '<li>🚫 Reduza cancelamentos</li>' +
+          '</ul>' +
+        '</div>' +
+        '<button class="btn btn-secondary" onclick="showScreen(' + "'" + 'select' + "'" + ')" style="margin-top:16px">Escolher outro restaurante</button>' +
+      '</div>';
+    return;
+  }
+
+  appState.selectedAmount = tier.maxLimit;
+  appState.selectedTerm = tier.terms[0];
+
+  var termsHtml = '';
+  for (var i = 0; i < tier.terms.length; i++) {
+    var t = tier.terms[i];
+    var selected = t === appState.selectedTerm ? ' selected' : '';
+    termsHtml += '<button class="term-btn' + selected + '" onclick="selectTerm(' + t + ')">' + t + ' meses</button>';
+  }
+
+  document.getElementById('offerContent').innerHTML =
+    '<div class="offer-header">' +
+      '<p style="font-size:13px;color:var(--gray);margin-bottom:4px">' + m.trading_name + '</p>' +
+      '<div class="tier-badge ' + tier.tag + '" style="margin-bottom:8px">' + tier.name + '</div>' +
+      '<div class="offer-amount">Até ' + fmtBRL(tier.maxLimit) + '</div>' +
+      '<div class="offer-subtitle">crédito pré-aprovado</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<p style="font-size:13px;font-weight:600;margin-bottom:8px">Escolha o valor</p>' +
+      '<input type="range" id="amountSlider" min="1000" max="' + tier.maxLimit + '" step="500" value="' + tier.maxLimit + '" style="width:100%;margin-bottom:8px" oninput="updateAmount(this.value)">' +
+      '<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray)">' +
+        '<span>' + fmtBRL(1000) + '</span>' +
+        '<span id="amountDisplay" style="font-weight:700;color:var(--dark);font-size:16px">' + fmtBRL(tier.maxLimit) + '</span>' +
+        '<span>' + fmtBRL(tier.maxLimit) + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<p style="font-size:13px;font-weight:600;margin-bottom:8px">Prazo de pagamento</p>' +
+      '<div class="term-options">' + termsHtml + '</div>' +
+    '</div>' +
+    '<div class="rate-display">' +
+      '<div class="rate-value">' + fmtRateMonthly(tier.rate) + '</div>' +
+      '<div class="rate-label">taxa de juros mensal</div>' +
+    '</div>' +
+    '<button class="btn btn-primary" onclick="proceedToTerms()">Ver condições completas</button>';
+}
+
+function updateAmount(value) {
+  appState.selectedAmount = parseInt(value);
+  document.getElementById('amountDisplay').textContent = fmtBRL(appState.selectedAmount);
+}
+
+function selectTerm(months) {
+  appState.selectedTerm = months;
+  var tier = appState.creditResult.tier;
+  var buttons = document.querySelectorAll('.term-btn');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].classList.remove('selected');
+  }
+  // Find and select the matching button
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].textContent.indexOf(String(months)) >= 0) {
+      buttons[i].classList.add('selected');
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// Terms / Boleto Calculation
+// ══════════════════════════════════════════════════════
+function calculateBoletoPlan(principal, months, monthlyRate) {
+  var weeklyRate = Math.pow(1 + monthlyRate, 1/4) - 1;
+  var numParcels = Math.round(months * 4.333); // 4.333 weeks per month
+  var totalCost = 0;
+  var remainingBalance = principal;
+  var parcels = [];
+
+  for (var i = 0; i < numParcels; i++) {
+    var principalPortion = principal / numParcels;
+    var interestPortion = remainingBalance * weeklyRate;
+    var boletoAmount = principalPortion + interestPortion;
+    parcels.push(boletoAmount);
+    totalCost += boletoAmount;
+    remainingBalance -= principalPortion;
+  }
+
+  var totalInterest = totalCost - principal;
+  var CET = Math.pow(1 + monthlyRate, 12) - 1;
+
+  return {
+    numParcels: numParcels,
+    weeklyRate: weeklyRate,
+    parcels: parcels,
+    firstParcel: parcels.length > 0 ? parcels[0] : 0,
+    totalCost: totalCost,
+    totalInterest: totalInterest,
+    CET: CET
+  };
+}
+
+function proceedToTerms() {
+  renderTermsScreen();
+  showScreen('terms');
+}
+
+function renderTermsScreen() {
+  var tier = appState.creditResult.tier;
+  var amount = appState.selectedAmount;
+  var months = appState.selectedTerm;
+
+  // Ensure amount is within tier limit
+  if (amount > tier.maxLimit) amount = tier.maxLimit;
+
+  var plan = calculateBoletoPlan(amount, months, tier.rate);
+
+  var jurosDia = tier.rate / 30; // daily interest ~ monthly/30
+  var multa = 0.02; // 2% late fee
+
+  var html = '<h2 style="font-size:18px;font-weight:700;margin-bottom:16px">Resumo da Oferta</h2>';
+
+  html += '<div class="card">' +
+    '<h3 style="font-size:14px;margin-bottom:12px">' + appState.selectedMerchant.trading_name + '</h3>' +
+    '<table class="terms-table">' +
+      '<tr><td>Valor solicitado</td><td>' + fmtBRL(amount) + '</td></tr>' +
+      '<tr><td>Prazo</td><td>' + months + ' meses</td></tr>' +
+      '<tr><td>Taxa de juros</td><td>' + fmtRateMonthly(tier.rate) + '</td></tr>' +
+    '</table>' +
+  '</div>';
+
+  html += '<div class="card">' +
+    '<h3 style="font-size:14px;margin-bottom:12px">Plano de Pagamento</h3>' +
+    '<table class="terms-table">' +
+      '<tr><td>Número de boletos</td><td><strong>' + plan.numParcels + ' boletos semanais</strong></td></tr>' +
+      '<tr><td>Valor de cada boleto</td><td><strong>' + fmtBRL(Math.round(plan.firstParcel)) + '</strong> (aproximado)</td></tr>' +
+      '<tr class="terms-divider"><td>Total a pagar</td><td><strong style="color:var(--red);font-size:16px">' + fmtBRL(Math.round(plan.totalCost)) + '</strong></td></tr>' +
+      '<tr><td>Total de juros</td><td>' + fmtBRL(Math.round(plan.totalInterest)) + '</td></tr>' +
+      '<tr><td>Custo Efetivo Total (CET)</td><td>' + fmtPct(plan.CET * 100) + ' ao ano</td></tr>' +
+    '</table>' +
+  '</div>';
+
+  html += '<div class="terms-notice">' +
+    '<p style="font-weight:700;margin-bottom:8px">Regras de Pagamento</p>' +
+    '<p style="margin-bottom:6px">📅 <strong>Pagamento sequencial:</strong> O próximo boleto é liberado somente após o pagamento do boleto anterior. Isso significa que os valores são cobrados um de cada vez — você não recebe todos os boletos de uma vez.</p>' +
+    '<p style="margin-bottom:6px">⚠️ <strong>Em caso de atraso:</strong> juros de ' + fmtPct(jurosDia * 100) + ' ao dia + multa de ' + fmtPct(multa * 100) + ' sobre o valor da parcela em atraso.</p>' +
+    '<p>✅ <strong>Em dia:</strong> Seus pagamentos em dia constroem seu histórico positivo e podem aumentar seu limite em futuras solicitações.</p>' +
+  '</div>';
+
+  document.getElementById('termsContent').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════
+// Navigation buttons
+// ══════════════════════════════════════════════════════
+document.getElementById('btnToOffer').addEventListener('click', function() {
+  renderOfferScreen();
+  showScreen('offer');
+});
+
+document.getElementById('btnRestart').addEventListener('click', function() {
+  appState = {
+    selectedMerchant: null,
+    creditResult: null,
+    selectedAmount: 0,
+    selectedTerm: 0,
+    currentScreen: 'select'
+  };
+  showScreen('select');
+});
+
+// Initialize
+renderMerchantList();
+</script>
+</body>
+</html>
