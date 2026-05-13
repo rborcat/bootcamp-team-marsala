@@ -1,0 +1,189 @@
+# Progress Log
+Run: 57eb1085-f454-4759-af14-e1e7b58183be
+Task: Implement spec.md, plan.md, and tasks.md from this directory
+Started: 2026-05-12T00:00:00Z
+
+## Codebase Patterns
+- Repository root: /Users/rodrigo.borcat/Documents/github/bootcamp-team-marsala
+- Feature spec lives in specs/001-credit-clean/
+- Fixture data: fixtures/lcm-users.json (10 merchants, only first 5 have merchant_id)
+- prototype/ goes in specs/001-credit-clean/prototype/
+- Plan says Vite 6 + React 19 + TypeScript 5 + Tailwind CSS 4 + React Router 7
+- Tailwind CSS 4 uses CSS-first config (`@import 'tailwindcss'` + `@theme {}`), NO tailwind.config.ts needed
+- Vite 6 uses `@tailwindcss/vite` plugin for Tailwind 4 integration
+- Path aliases: `@/` -> `src/` configured in both vite.config.ts (resolve.alias) and tsconfig.app.json (compilerOptions.paths)
+- Viewport: 390x844 mobile-first. `max-w-[390px]` on the main container in App.tsx
+- Tests/acceptance directory is at prototype/tests/acceptance/ (not at repo root)
+- Base build command: `cd prototype && npm run build`
+- Base typecheck: `cd prototype && npx tsc -b`
+- Base dev server: `cd prototype && npm run dev`
+- `.gitignore` already covers `node_modules/` and `dist/` from Vite scaffold
+- Empty directories use `.gitkeep` placeholders
+- Type-level tests: for stories where there's no runtime behavior (types, data), write compile-time validation files in src/ that exercise the types structurally; tsc -b validates them
+- TypeScript strict mode with noUnusedLocals/noUnusedParameters: use `void [expr1, expr2, ...]` to suppress unused-variable errors in test files
+- tsconfig.app.json includes "src" — test files that need compilation go there; acceptance specs go in tests/acceptance/
+- Importing JSON fixtures from the monorepo root (prototype → src → data): path is `../../../../../fixtures/lcm-users.json`. Import JSON with `import data from 'path' with { type: 'json' }` for type-safety + tree-shaking. JSON import must be Vite/TS 5.8+ compatible with `resolveJsonModule` (default in bundler mode).
+- Foreign key linking between merchants and credit data: use `merchant_id` (UUID string) as the join key, NOT `frn_id` (numeric). All CreditContract/RenegotiationPlan/DebtSummary reference `merchantId` (UUID string). The `activeMerchants` filter uses `merchant_id !== null` to select the 5 fixture merchants.
+- JSX must be in `.tsx` files. `.ts` files with JSX cause parse errors even with `"jsx": "react-jsx"` in tsconfig.
+- iFood brand tokens defined in index.css via `@theme`: --color-ifood-red (#ea1d2c), --color-ifood-red-dark (#c4162a)
+- All UI components use Tailwind classes exclusively, no CSS modules or styled-components.
+- Format functions use Intl.NumberFormat/Intl.DateTimeFormat with 'pt-BR' locale for proper Brazilian formatting.
+- AppContext uses useReducer for state management; hooks use a private useAppContext() that throws if used outside Provider. Data is loaded synchronously from static imports — no async data fetching needed for the prototype.
+- Context hooks pattern: useMerchant, useDebtSummary, usePlans, useSelectedPlan, useContract are all selector hooks that derive data from the current AppState by joining on selectedMerchantId/selectedPlanId.
+- Page components follow a consistent pattern: import PageShell, use context hooks (useMerchant, useDebtSummary, etc.), guard against missing data, render UI with Tailwind, wire navigation via useNavigate. Each page is registered as a route in App.tsx.
+- LCM trending item format: `"Item Name (share X% -> Y%)"`. parseTrendingItem uses regex to extract name and share values, then formats with pt-BR decimal separator.
+- LCM top_popular_items are raw strings (e.g. "Acai de 700ml (99 orders)") — rendered directly without parsing.
+- PlanCard component pattern: rounded-xl border card with installment count header, monthly amount in ifood-red, total cost, first payment date with calendar icon, and full-width primary button. The onSelect callback receives the full RenegotiationPlan object and is wired to context dispatch + navigation in the parent page.
+
+## Story Plan
+
+...
+
+---
+
+## 2026-05-12 - US-000: Scaffold prototype project
+- Scaffolded Vite 6 + React 19 + TypeScript 5.8 project in prototype/
+- Installed react-router-dom@7, tailwindcss@4, @tailwindcss/vite
+- Configured vite.config.ts with @tailwindcss/vite plugin and @/ → src/ path alias
+- Configured tsconfig.app.json with path aliases (baseUrl + paths)
+- Added @types/node for vite.config.ts Node.js APIs
+- Updated index.html: lang=pt-BR, viewport width=390, title "Credit Clean — iFood"
+- Created src/index.css with Tailwind 4 import and iFood brand token theme (ifood-red, ifood-red-dark, green-600, amber-500, Inter font)
+- Created src/main.tsx with BrowserRouter wrapping App
+- Created src/App.tsx with 390x844 container shell (max-w-[390px], min-h-dvh, bg-white shadow-md)
+- Created full directory structure: src/types/, src/data/, src/context/, src/hooks/, src/components/ui/, src/pages/, src/lib/, tests/acceptance/
+- Added .gitkeep placeholders in all empty directories
+- Typecheck passes (tsc -b), build produces dist/ without errors
+- Dev server starts and serves pt-BR HTML with correct viewport meta
+- **Learnings:** Tailwind 4 uses CSS-first config (`@import 'tailwindcss'` + `@theme`), no tailwind.config.ts needed. The Vite plugin `@tailwindcss/vite` handles it. Path alias needs both vite.config.ts resolve.alias AND tsconfig paths configured.
+
+## 2026-05-12 - US-001: Define TypeScript types for Merchant, LCM Profile, and Credit entities
+- Created src/types/merchant.ts with interfaces: Merchant, LcmProfile, PerformanceAndCommercialHealth, CustomerConversionFunnel, DeliveryAndFulfillment, PerformanceClassification
+- All interfaces match fixtures/lcm-users.json structure exactly — every nullable field typed as `number | null`, string fields typed as `string`, optional dynamic fields (avg_daily_orders*) typed as optional
+- Created src/types/credit.ts with interfaces: CreditContract, Installment, RenegotiationPlan, DebtSummary — all with `_synthetic: true` literal type field
+- InstallmentStatus = 'paid' | 'overdue' | 'upcoming' (union type)
+- DebtSummary.contractOrigin is nullable for the no-debt (Fat Buddha) edge case
+- Created src/types/index.ts barrel re-exporting all 10 types
+- Created src/types.test.ts with compile-time type validation: full Merchant matching fixture shape, nullable field handling, all credit entities with _synthetic: true, all installment statuses, DebtSummary null contractOrigin
+- Removed src/types/.gitkeep (no longer empty)
+- Typecheck passes (tsc -b), build passes (npm run build)
+- **Learnings:** PerformanceAndCommercialHealth has dynamic optional fields (avg_daily_orders, avg_daily_orders_dinner, avg_daily_orders_lunch) — not all merchants have all three. Type-level tests in src/ work because tsconfig.app.json includes "src".
+
+## 2026-05-12 - US-002: Create synthetic credit fixture data for all 5 merchants
+- Created src/data/credit.ts with typed CreditContract[], RenegotiationPlan[], and DebtSummary[] for 5 merchants
+- Acaiteria Ki Sabor (merchant_id: 6fde0ff9-92e2-47bf-a533-e74d272c979a): 1 contract R$3,000/12mo/R$275 monthly, 10 paid + 2 overdue installments (each R$900 → total R$1,800 to match sixpager), 3 reno plans (6xR$320, 12xR$165, 18xR$115)
+- Fat Buddha (5ca3b360-3e9b-47c7-859b-deda86db4673): all 8 paid, 0 overdue (tests US-005 edge case), 0 reno plans, DebtSummary.contractOrigin = null
+- Eky Espetaria (9bb2241e-7f01-4101-987a-4aa8ee8098bd): 11 paid + 1 overdue (R$400), 2 reno plans
+- Aya Sushi (ad257f6c-5b25-46f0-8fa1-92bc85c398ed): 7 paid + 3 overdue (R$150 each, total R$450), 3 reno plans
+- Dk+1 Lanches (02c22397-5e40-40c0-85bb-7e02a768a174): 8 paid + 1 overdue + 3 upcoming, 2 reno plans
+- All objects carry `_synthetic: true` literal type
+- Dates use ISO format, statuses: paid/overdue/upcoming
+- Convenience lookup functions: getContractByMerchantId, getPlansByMerchantId, getDebtSummaryByMerchantId
+- Created src/data/merchants.ts: imports fixtures/lcm-users.json, exports allMerchants (all 10), activeMerchants (5 with non-null merchant_id), getMerchantByFrnId, getMerchantByMerchantId
+- Created src/data.test.ts with compile-time validation for all 5 ACs: typed arrays, Acai R$1,800/2 overdue, Fat Buddha 0 overdue, all _synthetic: true, merchants typed import
+- Removed src/data/.gitkeep
+- Build and typecheck pass
+- **Learnings:** JSON fixture path from prototype/src/data/ is `../../../../../fixtures/lcm-users.json`. Import with `with { type: 'json' }` (TS 5.8+ / ESM). Foreign key is `merchant_id` (UUID string), NOT `frn_id` (numeric). `ContractOrigin` nullable type requires `as null` cast in type-level tests when asserting null.
+
+## 2026-05-12 - US-003: Implement currency formatter utility and base UI components
+- Created src/lib/format.ts with formatCurrency (Intl.NumberFormat pt-BR/BRL), formatDate (pt-BR DD/MM/YYYY), formatPercent (auto-scales fractions < 1)
+- Created src/components/ui/Button.tsx: primary/secondary/ghost variants, min-h-[44px] min-w-[44px], iFood-red (#EA1D2C) styling, hover states, focus-visible rings
+- Created src/components/ui/Badge.tsx: status-to-color mapping (overdue→amber-500, paid→green-600, upcoming→gray-400), pt-BR labels
+- Created src/components/ui/PageShell.tsx: header with optional back button (SVG chevron), title, safe-area padding, className override
+- All components use Tailwind classes exclusively
+- Created src/lib/format.test.tsx with compile-time validation for all 7 ACs: formatCurrency exact output, formatDate, formatPercent, component JSX acceptance, className overrides, all variants
+- Removed .gitkeep from src/lib/ and src/components/ui/
+- Typecheck passes (tsc -b), build passes (npm run build), dev server starts
+- **Learnings:** Intl.NumberFormat uses non-breaking space (\u00A0) between R$ and number — tests validate via .includes() rather than exact string match. JSX test files must use .tsx extension even with "jsx": "react-jsx" in tsconfig. Components should import only the types they need from react (ReactNode, ButtonHTMLAttributes, HTMLAttributes).
+- Files changed: src/lib/format.ts, src/lib/format.test.tsx, src/components/ui/Button.tsx, src/components/ui/Badge.tsx, src/components/ui/PageShell.tsx, src/lib/.gitkeep (deleted), src/components/ui/.gitkeep (deleted)
+
+## 2026-05-12 - US-004: Create AppContext and routing setup with React Router
+- Created src/context/AppContext.tsx: useReducer with AppState { selectedMerchantId, selectedPlanId, flowState, merchants, contracts, plans, summaries }
+- FlowState type: 'idle' | 'viewing' | 'options' | 'confirming' | 'confirmed'
+- Actions: SELECT_MERCHANT, SELECT_PLAN, SET_FLOW_STATE, CONFIRM, RESET
+- AppProvider wraps app, loads data via static imports at mount
+- Custom selector hooks: useMerchant(), useDebtSummary(), usePlans(), useSelectedPlan(), useContract(), useAppDispatch(), useAppState()
+- Default selected merchant: Acaiteria Ki Sabor (merchant_id 6fde0ff9-92e2-47bf-a533-e74d272c979a, frn_id 2992974)
+- CONFIRM action transitions flowState to 'confirmed', preserves selectedPlanId
+- Created src/hooks/useCurrency.ts: memoized wrapper around formatCurrency for React components
+- Created src/hooks/useDebtSummary.ts: derives DebtSummary for selected merchant, re-exporting from context
+- Updated App.tsx: AppProvider wraps Routes; 5 routes (/, /debt, /options, /confirm, /tracking) with placeholder page components + catch-all redirect
+- Created src/context.test.tsx: compile-time validation for all 8 ACs — provider wrapping, default merchant, all hooks return types, route paths, action types, flow state exhaustiveness
+- Removed .gitkeep from src/context/ and src/hooks/
+- Typecheck passes, build passes, dev server starts and serves correct HTML
+- **Learnings:** `typeof import('@/path')` in type assertions at module level doesn't work well for string literal comparisons — validate via runtime-level knowledge instead. AppContext private useAppContext() hook throws if used outside Provider (guard pattern). Data is 100% static/imported — no useEffect for data loading needed in the prototype.
+- Files changed: src/context/AppContext.tsx (new), src/hooks/useCurrency.ts (new), src/hooks/useDebtSummary.ts (new), src/App.tsx (updated), src/context.test.tsx (new), src/context/.gitkeep (deleted), src/hooks/.gitkeep (deleted)
+
+## 2026-05-13 - US-005: Build Debt Summary page and LCM Health Snapshot (US1 - P1)
+- Created src/pages/DebtSummaryPage.tsx: uses PageShell, useMerchant/useDebtSummary hooks, renders DebtCard + LcmHealthSnapshot + "Ver opcoes de renegociacao" CTA button linking to /options
+- Created src/components/DebtCard.tsx: card showing total overdue (formatCurrency), overdue count with singular/plural pt-BR labels, original contract terms (amount, term, monthly). Zero-debt state (Fat Buddha) renders checkmark, "Nenhuma parcela em atraso", "Voce esta em dia com seus pagamentos"
+- Created src/components/LcmHealthSnapshot.tsx: shows customer rating (★ StarRating), top popular items (renders raw strings direct), trending items with parseTrendingItem extracting share change arrows (→), "Seu negocio esta gerando receita" footer message. parseTrendingItem handles "Item Name (share X% -> Y%)" format
+- Copy matches spec.md: "R$ 1.800,00", "2 parcelas em atraso", rating 4.9, "Acai de 500ml (25,86% → 31,20%)"
+- Edge case: if no LCM data, health section hidden; debt data still shown (guard in DebtSummaryPage)
+- Fat Buddha (0 overdue) shows zero debt state with no error
+- Updated App.tsx: wired DebtSummaryPage to /debt route
+- Created src/debtSummary.test.tsx: compile-time validation for all 10 ACs — formatCurrency output, DebtCard overdue/zero-debt shapes, LcmHealthSnapshot with full LcmProfile, trending item parsing, all component prop contracts
+- Typecheck passes (tsc -b), build passes (npm run build)
+- **Learnings:** LCM trending items use the format `"Item Name (share X% -> Y%)"` — parseTrendingItem regex extracts name and share values. LCM top_popular_items are raw strings rendered directly (e.g. "Acai de 700ml (99 orders)"). Page component pattern: import PageShell, use context hooks, guard missing data, render UI + CTA with useNavigate. No horizontal scroll guaranteed by max-w-[390px] on main container in App.tsx.
+- Files changed: src/pages/DebtSummaryPage.tsx (new), src/components/DebtCard.tsx (new), src/components/LcmHealthSnapshot.tsx (new), src/debtSummary.test.tsx (new), src/App.tsx (updated)
+
+## 2026-05-13 - US-006: Build HomePage with Notification Banner (US5 - P5)
+- Created src/pages/HomePage.tsx: simulated Gestor de Pedidos home with iFood logo placeholder, welcome card, order stats skeleton, and recent orders placeholder
+- Created src/components/NotificationBanner.tsx: red (#EA1D2C) sticky banner, renders "Voce tem R\$ X.XXX,XX em atraso" based on useDebtSummary + formatCurrency, "Resolver agora" CTA button navigating to /debt
+- Banner visibility logic: hidden when flowState === 'confirmed', hidden when totalOverdue <= 0 (Fat Buddha), hidden when no merchant/summary data
+- Banner uses sticky top-0 positioning (non-blocking), role="alert" for accessibility, warning triangle icon
+- HomePage renders NotificationBanner above PageShell content in a flex-col layout
+- Button variant="secondary" with white border/text overrides for the CTA button on red background
+- Updated App.tsx: replaced placeholder HomePage with import from @/pages/HomePage, removed inline placeholder function
+- Created src/homePage.test.tsx: compile-time validation for all 8 ACs — formatCurrency output, component contracts, FlowState exhaustiveness, visibility logic documentation
+- Typecheck passes (tsc -b), build passes (npm run build), dev server starts and serves HTTP 200
+- **Learnings:** NotificationBanner derives data from context hooks (useMerchant, useDebtSummary, useAppState) with triple guard: confirmed flow → null, no data → null, no overdue → null. Button component supports important-prefixed Tailwind overrides for special styling on colored backgrounds. The PageShell header chevron can be styled separately from the banner (no z-index conflict).
+- Files changed: src/pages/HomePage.tsx (new), src/components/NotificationBanner.tsx (new), src/homePage.test.tsx (new), src/App.tsx (updated)
+
+## 2026-05-13 - US-007: Build Renegotiation Options page (US2 - P2)
+- Created src/components/PlanCard.tsx: card displaying installment count (e.g. "12x"), monthly amount in pt-BR ("R$ 165,00/mes"), total cost ("Total: R$ 1.980,00"), first payment date with calendar icon, and "Escolher este plano" full-width primary button
+- Created src/pages/OptionsPage.tsx: uses PageShell with title "Opcoes de renegociacao", lists plans from usePlans() sorted by installment count (shorter first), scrollable list when 3+ plans via overflow-y-auto
+- Edge case: 0 plans available shows "Entre em contato com o suporte" message with alert icon and descriptive subtitle
+- "Escolher este plano" dispatches SELECT_PLAN action and navigates to /confirm
+- Updated App.tsx: replaced placeholder OptionsPage with import from @/pages/OptionsPage
+- Created src/optionsPage.test.tsx: compile-time validation for all 10 ACs — plan card rendering, formatCurrency usage, context dispatch, zero-plans message, scroll behavior, horizontal overflow constraints, PlanCard props contract
+- Typecheck passes (tsc -b), build passes (npm run build)
+- **Learnings:** PlanCard follows the same pattern as DebtCard: rounded-xl border card with Tailwind spacing, formatCurrency for all amounts, SVG icons inline. The onSelect callback passes the full RenegotiationPlan object to the parent page, which wires it to context dispatch + react-router navigate. The sortedPlans array uses spread + sort to avoid mutating the original context data. Fat Buddha (0 plans) tests the zero-plans edge case with a conditional empty state rendering.
+- Files changed: src/components/PlanCard.tsx (new), src/pages/OptionsPage.tsx (new), src/optionsPage.test.tsx (new), src/App.tsx (updated)
+
+## 2026-05-13 - US-008: Build Commit Confirmation and Success screens (US3 - P3)
+- Created src/components/ConfirmSheet.tsx: summary card showing selected plan details (installments, monthly amount, total, first payment date), "Confirmar este plano?" question, "Confirmar" primary button and "Voltar" secondary button. onConfirm/onBack callbacks for parent control.
+- Created src/components/SuccessScreen.tsx: green checkmark icon in green-100 circle, "Renegociacao confirmada" heading, plan summary repeated (parcelas, total, primeiro pagamento), "Ver pagamentos" button using useNavigate to /tracking.
+- Created src/pages/ConfirmPage.tsx: local useState toggling between 'confirming' and 'success' states. Guards against missing selectedPlan (shows "Nenhum plano selecionado" with link to /options). handleConfirm dispatches CONFIRM to context (sets flowState=confirmed) and transitions to success screen. handleBack navigates to /options.
+- Updated src/App.tsx: replaced placeholder ConfirmPage inline function with import from @/pages/ConfirmPage.
+- Created src/confirmPage.test.tsx: compile-time validation for all 10 ACs — plan summary rendering, confirm/back buttons, success state transition, "Ver pagamentos" navigation, flowState='confirmed' after CONFIRM, no network calls (local state only), no horizontal scroll at 390x844.
+- All flows use local state only (no network call). No auto-confirm — explicit merchant action required (constitution tenet).
+- No horizontal scroll at 390x844 (max-w-[390px] container in App.tsx).
+- Typecheck passes (tsc -b), build passes (npm run build).
+- **Learnings:** Two-state pages follow a pattern: useState<ConfirmState> drives rendering, dispatch updates context, setLocalState drives the local transition. The CONFIRM action in the reducer preserves selectedPlanId so SuccessScreen can still render plan details from context. SuccessScreen imports useNavigate directly (no prop drilling needed for /tracking navigation).
+- Files changed: src/components/ConfirmSheet.tsx (new), src/components/SuccessScreen.tsx (new), src/pages/ConfirmPage.tsx (new), src/confirmPage.test.tsx (new), src/App.tsx (updated)
+
+## 2026-05-13 - US-009: Build Repayment Tracking page (US4 - P4)
+- Created src/components/InstallmentRow.tsx: single installment in a vertical timeline with icon column (paid→green check ✓, overdue→amber warning △, upcoming→gray clock ◷), installment number + due date + amount, status label (paid→"Pago em [date]", overdue→"Em atraso", upcoming→"A vencer em [date]"). Connector line between rows via isLast prop. Text truncation via min-w-0 on content column to prevent horizontal overflow.
+- Created src/pages/TrackingPage.tsx: uses PageShell with title "Pagamentos", renders LcmHealthSnapshot at top (reuses existing component), plan summary card ("Plano em andamento" with installment count, monthly amount, X de Y parcelas pagas), and vertical timeline of all installments from the contract sorted by installment number.
+- Guard states: if no merchant selected → "Nenhum comerciante selecionado", if no plan selected → "Nenhum plano selecionado", if no contract → "Nenhum contrato encontrado"
+- Updated App.tsx: replaced placeholder TrackingPage inline function with import from @/pages/TrackingPage.
+- Created src/trackingPage.test.tsx: compile-time validation for all 8 ACs — TrackingPage JSX, InstallmentRow with all 3 statuses (paid/overdue/upcoming), LcmHealthSnapshot integration, /tracking route string, formatCurrency/formatDate usage, type exhaustiveness for InstallmentStatus and FlowState.
+- Typecheck passes (tsc -b), build passes (npm run build).
+- **Learnings:** InstallmentRow uses a two-column timeline layout (flex gap-3): left column has the status icon circle + vertical connector line, right column has content. The connector line is hidden via isLast prop on the final installment. Status-aware color coding: green for paid, amber for overdue, gray for upcoming — applied to both icon backgrounds and amount text. Text truncation uses min-w-0 + flex-1 on the content column to prevent horizontal overflow at 390px viewport.
+- Files changed: src/components/InstallmentRow.tsx (new), src/pages/TrackingPage.tsx (new), src/trackingPage.test.tsx (new), src/App.tsx (updated)
+
+## 2026-05-13 - US-010: Build hidden Merchant Switcher debug control (FR-015)
+- Created src/components/MerchantSwitcher.tsx: hidden debug control activated by triple-tap on children trigger zone (tap counter with 500ms reset window)
+- Shows dropdown modal with backdrop overlay listing all 5 active merchants by trading_name, selected merchant highlighted with red check mark
+- Selecting a merchant dispatches SELECT_MERCHANT to context (resets selectedPlanId=null, flowState=idle) and closes the dropdown
+- Integrated into PageShell: the title <h1> is wrapped in MerchantSwitcher, triple-tap page title to reveal switcher
+- Added select-none to title to prevent text selection during triple-tap gesture
+- Footer "Fechar" button and backdrop click both close the dropdown
+- Switcher hidden by default (useState(false)) — only visible after triple-tap activation
+- Created src/merchantSwitcher.test.tsx: compile-time validation for all 6 ACs — component contract, 5 merchant names, SELECT_MERCHANT action reset, all 5 merchants debt data lookups
+- Typecheck passes (tsc -b), build passes (npm run build)
+- **Learnings:** Debug toggle pattern uses useState + useRef for tap counting with timer reset. MerchantSwitcher wraps children in a transparent click handler div (cursor-default) so the visual appearance of the wrapped element is unchanged. The dropdown modal uses `fixed inset-x-0 top-24 z-50 mx-auto max-w-[360px]` to center within the 390px container. activeMerchants from context provides the 5 merchants, already typed as `readonly Merchant[]`.
+- Files changed: src/components/MerchantSwitcher.tsx (new), src/components/ui/PageShell.tsx (updated), src/merchantSwitcher.test.tsx (new)
+
+---
