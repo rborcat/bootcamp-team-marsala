@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tamandua Kanban</title>
+<style>
+  :root {
+    --red: #EA1D2C;
+    --red-light: #FFF0F1;
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --border: #E8E8E8;
+    --text: #1A1A1A;
+    --text-secondary: #717171;
+    --grey: #E8E8E8;
+    --grey-dark: #A0A0A0;
+    --amber: #F5A623;
+    --amber-light: #FFF8EC;
+    --green: #2E7D32;
+    --green-light: #EDF7ED;
+    --red-status: #D32F2F;
+    --red-status-light: #FEECEC;
+    --done-bg: #E8F5E9;
+    --font: "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--red);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .header-title span {
+    color: var(--red);
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+  }
+
+  .meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .status-badge.running {
+    background: var(--amber-light);
+    color: var(--amber);
+  }
+
+  .status-badge.completed {
+    background: var(--green-light);
+    color: var(--green);
+  }
+
+  .status-badge.failed {
+    background: var(--red-status-light);
+    color: var(--red-status);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .status-badge.running .status-dot {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* ── Board ── */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    padding: 24px 32px;
+    min-height: calc(100vh - 100px);
+    align-content: start;
+  }
+
+  /* ── Lane ── */
+  .lane {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .lane-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .lane-name {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .lane-index {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .lane-body {
+    flex: 1;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 120px;
+  }
+
+  .lane-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Lane status indicator ── */
+  .lane.status-waiting { border-top: 3px solid var(--grey); }
+  .lane.status-pending { border-top: 3px solid var(--grey-dark); }
+  .lane.status-running { border-top: 3px solid var(--amber); }
+  .lane.status-done    { border-top: 3px solid var(--green); }
+  .lane.status-failed  { border-top: 3px solid var(--red-status); }
+
+  /* ── Card ── */
+  .card {
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .card-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .card-meta {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* card status colors */
+  .card.status-pending {
+    background: var(--bg);
+    border-color: var(--grey);
+  }
+  .card.status-pending .card-dot { background: var(--grey-dark); }
+
+  .card.status-running {
+    background: var(--amber-light);
+    border-color: var(--amber);
+  }
+  .card.status-running .card-dot {
+    background: var(--amber);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .card.status-done {
+    background: var(--green-light);
+    border-color: var(--green);
+  }
+  .card.status-done .card-dot { background: var(--green); }
+
+  .card.status-failed {
+    background: var(--red-status-light);
+    border-color: var(--red-status);
+  }
+  .card.status-failed .card-dot { background: var(--red-status); }
+
+  .card.status-waiting {
+    background: var(--bg);
+    border-color: var(--border);
+    opacity: 0.6;
+  }
+  .card.status-waiting .card-dot { background: var(--grey); }
+
+  /* ── Empty lane ── */
+  .lane-empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grey-dark);
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  /* ── Retry badge ── */
+  .retry-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 100px;
+    background: var(--red-status-light);
+    color: var(--red-status);
+    font-weight: 600;
+  }
+
+  /* ── Connection indicator ── */
+  .connection {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .connection-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .connection-dot.ok { background: var(--green); }
+  .connection-dot.err { background: var(--red-status); }
+
+  /* ── Animations ── */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  /* ── Responsive: phone ── */
+  @media (max-width: 640px) {
+    .board {
+      grid-template-columns: 1fr;
+      padding: 12px;
+      gap: 12px;
+    }
+    .header {
+      padding: 16px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .header-meta {
+      gap: 16px;
+    }
+  }
+
+  /* ── Responsive: tablet ── */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .board {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header" id="header">
+  <div class="header-left">
+    <div class="header-title">Tamandua <span>Kanban</span></div>
+    <div class="connection" id="connection">
+      <div class="connection-dot err"></div>
+      <span>connecting...</span>
+    </div>
+  </div>
+  <div class="header-meta" id="headerMeta"></div>
+</div>
+
+<div class="board" id="board"></div>
+
+<script>
+const API = (() => {
+  const loc = window.location;
+  if (loc.protocol === 'file:') return 'http://127.0.0.1:7331/api/state';
+  return `${loc.origin}/api/state`;
+})();
+
+const AGENTS = [
+  { stepId: 'plan',           label: 'Planner',  index: 1 },
+  { stepId: 'setup',          label: 'Setup',    index: 2 },
+  { stepId: 'implement',      label: 'Developer', index: 3 },
+  { stepId: 'verify',         label: 'Verifier', index: 4 },
+  { stepId: 'test',           label: 'Tester',   index: 5 },
+  { stepId: 'finalize_merge', label: 'Merger',   index: 6 },
+];
+
+function elapsed(iso) {
+  if (!iso) return '--:--:--';
+  const start = new Date(iso);
+  const diff = Math.max(0, Math.floor((Date.now() - start.getTime()) / 1000));
+  const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+  const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+  const s = String(diff % 60).padStart(2, '0');
+  return `${h}:${m}:${s}`;
+}
+
+function formatTokens(n) {
+  if (!n || n === 0) return '0';
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K';
+  return String(n);
+}
+
+function normalizeStatus(s) {
+  if (!s) return 'waiting';
+  if (s === 'completed' || s === 'done') return 'done';
+  return s;
+}
+
+function renderHeader(run) {
+  const meta = document.getElementById('headerMeta');
+  const status = normalizeStatus(run.status);
+  meta.innerHTML = `
+    <div class="meta-item">
+      <span class="meta-label">Run</span>
+      <span class="meta-value">${run.id ? run.id.slice(0, 8) : '--'}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Workflow</span>
+      <span class="meta-value">${run.workflow_id || '--'}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Elapsed</span>
+      <span class="meta-value" id="elapsedTime">${elapsed(run.created_at)}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Tokens</span>
+      <span class="meta-value">${formatTokens(run.tokens_spent)}</span>
+    </div>
+    <div class="meta-item">
+      <span class="status-badge ${status}">
+        <span class="status-dot"></span>
+        ${status}
+      </span>
+    </div>
+  `;
+  window._runCreatedAt = run.created_at;
+}
+
+function renderBoard(steps, stories) {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+
+  const stepsMap = {};
+  steps.forEach(s => { stepsMap[s.step_id] = s; });
+
+  // Group stories by lane — stories belong to "implement" lane
+  const storiesByLane = {};
+  stories.forEach(s => {
+    const lane = 'implement';
+    if (!storiesByLane[lane]) storiesByLane[lane] = [];
+    storiesByLane[lane].push(s);
+  });
+
+  AGENTS.forEach(agent => {
+    const step = stepsMap[agent.stepId] || {};
+    const status = normalizeStatus(step.status);
+    const laneStories = storiesByLane[agent.stepId] || [];
+
+    const lane = document.createElement('div');
+    lane.className = `lane status-${status}`;
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'lane-header';
+    header.innerHTML = `
+      <span class="lane-name">${agent.label}</span>
+      <span class="lane-index">Step ${agent.index}</span>
+    `;
+    lane.appendChild(header);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'lane-body';
+
+    if (agent.stepId === 'implement' && laneStories.length > 0) {
+      // Render story cards
+      laneStories.forEach(story => {
+        const sStatus = normalizeStatus(story.status);
+        const card = document.createElement('div');
+        card.className = `card status-${sStatus}`;
+        let retryHtml = '';
+        if (story.retry_count > 0) {
+          retryHtml = `<span class="retry-badge">retry ${story.retry_count}/${story.max_retries}</span>`;
+        }
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="card-dot"></span>
+            <span class="card-title">${escHtml(story.title)}</span>
+            ${retryHtml}
+          </div>
+          <div class="card-meta">${story.story_id || ''}</div>
+        `;
+        body.appendChild(card);
+      });
+    } else {
+      // Render a single step card
+      const card = document.createElement('div');
+      card.className = `card status-${status}`;
+      let retryHtml = '';
+      if (step.retry_count > 0) {
+        retryHtml = `<span class="retry-badge">retry ${step.retry_count}/${step.max_retries}</span>`;
+      }
+      let statusLabel = status;
+      if (status === 'waiting') statusLabel = 'queued';
+
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="card-dot"></span>
+          <span class="card-title">${agent.label}</span>
+          ${retryHtml}
+        </div>
+        <div class="card-meta">${statusLabel}</div>
+      `;
+      body.appendChild(card);
+    }
+
+    lane.appendChild(body);
+
+    // Footer
+    const footer = document.createElement('div');
+    footer.className = 'lane-footer';
+
+    if (agent.stepId === 'implement' && laneStories.length > 0) {
+      const doneCount = laneStories.filter(s => normalizeStatus(s.status) === 'done').length;
+      footer.innerHTML = `
+        <span>${doneCount} / ${laneStories.length} stories</span>
+        <span>${status}</span>
+      `;
+    } else {
+      footer.innerHTML = `
+        <span>${status === 'done' ? 'completed' : status}</span>
+        <span>${step.retry_count > 0 ? 'retries: ' + step.retry_count : ''}</span>
+      `;
+    }
+
+    lane.appendChild(footer);
+    board.appendChild(lane);
+  });
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function setConnection(ok) {
+  const el = document.getElementById('connection');
+  if (ok) {
+    el.innerHTML = '<div class="connection-dot ok"></div><span>live</span>';
+  } else {
+    el.innerHTML = '<div class="connection-dot err"></div><span>disconnected</span>';
+  }
+}
+
+async function refresh() {
+  try {
+    const res = await fetch(API);
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    setConnection(true);
+    renderHeader(data.run);
+    renderBoard(data.steps, data.stories);
+  } catch (e) {
+    setConnection(false);
+    console.warn('Fetch failed:', e.message);
+  }
+}
+
+// Elapsed time ticker (every second)
+setInterval(() => {
+  const el = document.getElementById('elapsedTime');
+  if (el && window._runCreatedAt) {
+    el.textContent = elapsed(window._runCreatedAt);
+  }
+}, 1000);
+
+// Data refresh every 3 seconds
+refresh();
+setInterval(refresh, 3000);
+</script>
+</body>
+</html>

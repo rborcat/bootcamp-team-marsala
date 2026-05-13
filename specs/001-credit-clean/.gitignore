@@ -1,0 +1,41 @@
+# Environment
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.secret
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.cache/
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+
+# Playwright
+test-results/
+playwright-report/

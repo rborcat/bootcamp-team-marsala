@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Clean — Pitch Deck</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: { extend: {} }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script>
+const CHART_COLORS = {
+  blue:   "#0079F2",
+  purple: "#795EFF",
+  green:  "#009118",
+  red:    "#A60808",
+  amber:  "#D97706",
+  pink:   "#EC4899",
+  teal:   "#0D9488",
+  slate:  "#64748B",
+};
+const CHART_COLOR_LIST = [
+  CHART_COLORS.blue, CHART_COLORS.purple, CHART_COLORS.teal,
+  CHART_COLORS.amber, CHART_COLORS.pink, CHART_COLORS.green,
+  CHART_COLORS.red, CHART_COLORS.slate,
+];
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+  * { font-family: 'Inter', system-ui, sans-serif; }
+  [x-cloak] { display: none !important; }
+
+  @media print {
+    @page { size: landscape; margin: 0; }
+    html { background: white !important; }
+    body { color: black !important; background: white !important; }
+    .print\\:hidden { display: none !important; }
+    .slide { break-after: page; width: 100vw; height: 100vh; }
+    .slide-deck { display: block; height: auto; overflow: visible; }
+    html.dark body, html.dark .bg-zinc-950, html.dark .bg-zinc-900 {
+      background: white !important;
+    }
+    html.dark .text-zinc-100, html.dark .text-zinc-200, html.dark .text-zinc-300 {
+      color: black !important;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .slide-deck { height: auto; min-height: 100vh; overflow: visible; }
+    .slide {
+      position: relative !important;
+      opacity: 1 !important;
+      z-index: auto !important;
+      pointer-events: auto !important;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+      border-bottom: 1px solid rgb(228 228 231);
+    }
+    .slide [class*="text-["] { font-size: revert !important; }
+    .slide-deck > .absolute.bottom-0 { display: none; }
+  }
+
+  .gradient-title {
+    background: linear-gradient(135deg, #0079F2 0%, #795EFF 50%, #0D9488 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .slide-accent-bar {
+    width: 80px;
+    height: 5px;
+    background: linear-gradient(90deg, #0079F2, #795EFF);
+    border-radius: 3px;
+  }
+  .quote-mark {
+    font-size: 8vw;
+    line-height: 1;
+    color: #0079F2;
+    opacity: 0.15;
+    position: absolute;
+    top: 8vh;
+    left: 6vw;
+    font-family: Georgia, serif;
+  }
+  @media (max-width: 639px) {
+    .quote-mark { font-size: 4rem; top: 1rem; left: 1rem; }
+  }
+  .kpi-card {
+    background: rgba(0, 121, 242, 0.06);
+    border: 1px solid rgba(0, 121, 242, 0.12);
+    border-radius: 16px;
+    padding: 1.5vw 2vw;
+    text-align: center;
+  }
+  @media (max-width: 639px) {
+    .kpi-card { padding: 1rem; border-radius: 12px; }
+  }
+  .step-number {
+    width: 2.5vw;
+    height: 2.5vw;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 50%;
+    background: #0079F2;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2vw;
+    flex-shrink: 0;
+  }
+  @media (max-width: 639px) {
+    .step-number { width: 28px; height: 28px; font-size: 0.875rem; }
+  }
+</style>
+
+<script id="slides-data" type="application/json">
+[
+  {"type":"title","title":"Credit Clean"},
+  {"type":"headline-bullets","title":"The Problem"},
+  {"type":"quote","title":"Customer Voice"},
+  {"type":"headline-bullets","title":"The Solution"},
+  {"type":"big-stat","title":"Market Size"},
+  {"type":"headline-bullets","title":"How It Works"},
+  {"type":"chart","title":"The Funnel Gap"},
+  {"type":"headline-bullets","title":"Traction and Metrics"},
+  {"type":"headline-bullets","title":"Business Model"},
+  {"type":"headline-bullets","title":"Why Now"},
+  {"type":"headline-bullets","title":"The Team"},
+  {"type":"closing","title":"The Ask"}
+]
+</script>
+</head>
+
+<body class="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 m-0 p-0 overflow-hidden">
+
+<div class="slide-deck w-screen h-screen overflow-hidden relative"
+     x-data="slideshow()" x-init="init()"
+     @keydown.window="onKey($event)">
+
+  <!-- Progress bar -->
+  <div class="absolute top-0 left-0 right-0 h-1 bg-zinc-200 dark:bg-zinc-800 z-30 print:hidden">
+    <div class="h-full transition-all duration-200"
+         style="background: linear-gradient(90deg, #0079F2, #795EFF);"
+         :style="`width: ${((current+1)/total)*100}%`"></div>
+  </div>
+
+  <!-- ============================== SLIDE 1: TITLE ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center justify-center"
+           :class="0 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="0">
+    <div class="text-center px-8 sm:px-16">
+      <div class="slide-accent-bar mx-auto mb-[3vh]"></div>
+      <h1 class="text-[8vw] sm:text-[7vw] font-black leading-[0.95] gradient-title mb-[2vh]">
+        Credit Clean
+      </h1>
+      <p class="text-[2.2vw] sm:text-[2vw] font-medium text-zinc-500 dark:text-zinc-400 max-w-[70vw] mx-auto leading-snug">
+        Self-service debt regularization for iFood merchants
+      </p>
+      <div class="mt-[5vh] flex items-center justify-center gap-[2vw]">
+        <span class="text-[1.4vw] sm:text-[1.2vw] text-zinc-400 dark:text-zinc-500 font-medium">Team Marsala</span>
+        <span class="text-zinc-300 dark:text-zinc-700">|</span>
+        <span class="text-[1.4vw] sm:text-[1.2vw] text-zinc-400 dark:text-zinc-500 font-medium">May 2026</span>
+      </div>
+      <div class="mt-[2vh]">
+        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900 text-[1vw] sm:text-xs text-zinc-500 dark:text-zinc-400">
+          Sources: sixpager.md, lcm-users.json, Databricks credit tables
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 2: PROBLEM ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center"
+           :class="1 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="1">
+    <div class="px-[8vw] w-full">
+      <div class="slide-accent-bar mb-[2vh]"></div>
+      <h2 class="text-[4vw] sm:text-[3.5vw] font-bold mb-[3vh]">Merchants with overdue loans<br>have no way to help themselves</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-[2vw]">
+        <div class="kpi-card">
+          <div class="text-[4vw] sm:text-[3vw] font-black text-[#A60808]">0</div>
+          <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-600 dark:text-zinc-400 mt-1">Self-service channels for overdue merchants today</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[4vw] sm:text-[3vw] font-black text-[#D97706]">2-3</div>
+          <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-600 dark:text-zinc-400 mt-1">Max outbound calls before collections gives up on long-tail merchants</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[4vw] sm:text-[3vw] font-black text-[#A60808]">100%</div>
+          <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-600 dark:text-zinc-400 mt-1">Of renegotiations require a human call today</div>
+        </div>
+      </div>
+      <p class="text-[1.6vw] sm:text-[1.4vw] text-zinc-500 dark:text-zinc-400 mt-[3vh] max-w-[70vw]">
+        The merchant wants to pay. The data exists. The renegotiation options exist.
+        But there is no channel connecting them outside business hours.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 3: CUSTOMER VOICE ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center justify-center relative"
+           :class="2 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="2">
+    <div class="quote-mark">"</div>
+    <div class="px-[10vw] max-w-[80vw]">
+      <blockquote class="text-[2.2vw] sm:text-[2vw] font-medium leading-relaxed text-zinc-700 dark:text-zinc-300 italic">
+        "I know I owe money. I want to pay it back. But I don't know the exact amount,
+        I don't know if I can renegotiate, and I definitely don't have time to sit on hold
+        with a call center during dinner rush. Show me what I owe, show me my options,
+        and let me pick one. I'll do it at 2am after I close the shop."
+      </blockquote>
+      <div class="mt-[3vh] flex items-center gap-[1.5vw]">
+        <div class="w-[4vw] h-[4vw] min-w-[40px] min-h-[40px] rounded-full bg-gradient-to-br from-[#795EFF] to-[#0D9488] flex items-center justify-center text-white font-bold text-[1.6vw]">A</div>
+        <div>
+          <div class="text-[1.6vw] sm:text-[1.4vw] font-semibold">Acaiteria Ki Sabor</div>
+          <div class="text-[1.2vw] sm:text-[1.1vw] text-zinc-500 dark:text-zinc-400">Porto Velho, RO &middot; 4.9 stars &middot; 2.6 orders/day &middot; Single location &middot; LONG TAIL</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 4: SOLUTION ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center"
+           :class="3 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="3">
+    <div class="px-[8vw] w-full">
+      <div class="slide-accent-bar mb-[2vh]"></div>
+      <h2 class="text-[4vw] sm:text-[3.5vw] font-bold mb-[3vh]">Credit Clean: self-service debt<br>resolution inside the tools merchants already use</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-[3vw] mt-[2vh]">
+        <div>
+          <div class="text-[1.8vw] sm:text-[1.6vw] font-semibold text-[#0079F2] mb-[1vh]">What it does</div>
+          <ul class="space-y-[1.2vh] text-[1.5vw] sm:text-[1.3vw] text-zinc-700 dark:text-zinc-300">
+            <li class="flex items-start gap-[0.8vw]"><span class="text-[#009118] font-bold mt-0.5">+</span> Shows merchants their exact debt, broken down by contract</li>
+            <li class="flex items-start gap-[0.8vw]"><span class="text-[#009118] font-bold mt-0.5">+</span> Presents renegotiation options from the existing credit engine</li>
+            <li class="flex items-start gap-[0.8vw]"><span class="text-[#009118] font-bold mt-0.5">+</span> Pairs debt data with LCM business health context</li>
+            <li class="flex items-start gap-[0.8vw]"><span class="text-[#009118] font-bold mt-0.5">+</span> Available 24/7 -- no call center, no appointments</li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[1.8vw] sm:text-[1.6vw] font-semibold text-[#64748B] mb-[1vh]">What it does not do</div>
+          <ul class="space-y-[1.2vh] text-[1.5vw] sm:text-[1.3vw] text-zinc-500 dark:text-zinc-400">
+            <li class="flex items-start gap-[0.8vw]"><span class="font-bold mt-0.5">-</span> Does not approve new loans</li>
+            <li class="flex items-start gap-[0.8vw]"><span class="font-bold mt-0.5">-</span> Does not modify credit scores</li>
+            <li class="flex items-start gap-[0.8vw]"><span class="font-bold mt-0.5">-</span> Does not change merchant visibility to consumers</li>
+            <li class="flex items-start gap-[0.8vw]"><span class="font-bold mt-0.5">-</span> Does not build a new credit engine</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 5: MARKET SIZE ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center justify-center"
+           :class="4 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="4">
+    <div class="text-center px-[8vw]">
+      <div class="slide-accent-bar mx-auto mb-[2vh]"></div>
+      <div class="text-[2vw] sm:text-[1.6vw] font-semibold text-zinc-500 dark:text-zinc-400 mb-[1vh]">Preserved annual GMV if we retain 5,000 long-tail merchants</div>
+      <div class="text-[12vw] sm:text-[10vw] font-black gradient-title leading-none">R$140M</div>
+      <div class="mt-[3vh] grid grid-cols-1 sm:grid-cols-3 gap-[2vw] max-w-[70vw] mx-auto">
+        <div class="kpi-card">
+          <div class="text-[2.5vw] sm:text-[2vw] font-black">2.6</div>
+          <div class="text-[1.2vw] sm:text-[1vw] text-zinc-500 dark:text-zinc-400 mt-1">Avg daily orders per long-tail merchant</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[2.5vw] sm:text-[2vw] font-black">R$30</div>
+          <div class="text-[1.2vw] sm:text-[1vw] text-zinc-500 dark:text-zinc-400 mt-1">Avg ticket for VERY_CHEAP segment</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[2.5vw] sm:text-[2vw] font-black">R$28k</div>
+          <div class="text-[1.2vw] sm:text-[1vw] text-zinc-500 dark:text-zinc-400 mt-1">Annual GMV per retained merchant</div>
+        </div>
+      </div>
+      <p class="text-[1.4vw] sm:text-[1.2vw] text-zinc-400 dark:text-zinc-500 mt-[2vh]">
+        5,000 merchants x R$28,000/year = R$140M in GMV that churns with unresolved debt
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 6: HOW IT WORKS ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center"
+           :class="5 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="5">
+    <div class="px-[8vw] w-full">
+      <div class="slide-accent-bar mb-[2vh]"></div>
+      <h2 class="text-[3.5vw] sm:text-[3vw] font-bold mb-[3vh]">The 60-second merchant journey</h2>
+      <div class="space-y-[2vh]">
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="step-number">1</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">Trigger</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">Non-blocking notification appears in Gestor de Pedidos. Does not interrupt order flow.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="step-number">2</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">View</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">Debt summary + LCM business health snapshot. "Your Acai de 500ml is trending up 31%."</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="step-number">3</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">Options</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">Renegotiation plans from the existing credit engine. Each shows monthly amount and total cost.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="step-number">4</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">Commit</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">Merchant selects a plan and confirms. Status updates immediately.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="step-number">5</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">Track</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">Repayment progress shown alongside business metrics. Each on-time payment is acknowledged.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 7: CHART — FUNNEL GAP ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex flex-col items-center justify-center"
+           :class="6 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="6">
+    <h2 class="text-[3vw] sm:text-[2.5vw] font-bold mb-[1.5vh]">Acaiteria Ki Sabor: customers love the product, but checkout drops</h2>
+    <div class="w-[80%] h-[55vh]" id="funnel-chart"></div>
+    <p class="text-[1.6vw] sm:text-[1.3vw] text-zinc-500 dark:text-zinc-400 mt-[1vh]">
+      71.6% view rate but only 9.9% purchase -- operational gaps from debt stress compound the problem
+    </p>
+    <figcaption class="text-[0.9vw] sm:text-xs text-zinc-400 dark:text-zinc-500 mt-[1vh] max-w-[70vw] text-center">
+      <strong class="text-zinc-600 dark:text-zinc-300">Source:</strong> lcm-users.json (Acaiteria Ki Sabor, frn_id 2992974) &middot;
+      <strong class="text-zinc-600 dark:text-zinc-300">Definition:</strong> Percentage of catalog visitors completing each funnel stage &middot;
+      <strong class="text-zinc-600 dark:text-zinc-300">Unit:</strong> Percentage &middot;
+      <strong class="text-zinc-600 dark:text-zinc-300">Period:</strong> 4 weeks ending May 2026
+    </figcaption>
+  </section>
+
+  <!-- ============================== SLIDE 8: TRACTION & METRICS ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center"
+           :class="7 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="7">
+    <div class="px-[8vw] w-full">
+      <div class="slide-accent-bar mb-[2vh]"></div>
+      <h2 class="text-[3.5vw] sm:text-[3vw] font-bold mb-[3vh]">Two metrics we move</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-[3vw]">
+        <div class="rounded-2xl border border-[#0079F2]/20 bg-[#0079F2]/5 p-[2.5vw]">
+          <div class="text-[1.2vw] sm:text-[1vw] font-semibold text-[#0079F2] uppercase tracking-wider mb-[1vh]">Primary</div>
+          <div class="text-[3.5vw] sm:text-[3vw] font-black">0% &#8594; 30-40%</div>
+          <div class="text-[1.6vw] sm:text-[1.3vw] text-zinc-600 dark:text-zinc-400 mt-[1vh]">
+            Self-service regularization rate<br>
+            <span class="text-[1.2vw] sm:text-[1vw] text-zinc-400">(merchants resolving debt without a collections call)</span>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-[#795EFF]/20 bg-[#795EFF]/5 p-[2.5vw]">
+          <div class="text-[1.2vw] sm:text-[1vw] font-semibold text-[#795EFF] uppercase tracking-wider mb-[1vh]">Secondary</div>
+          <div class="text-[3.5vw] sm:text-[3vw] font-black">+90-day retention</div>
+          <div class="text-[1.6vw] sm:text-[1.3vw] text-zinc-600 dark:text-zinc-400 mt-[1vh]">
+            Overdue merchant retention rate<br>
+            <span class="text-[1.2vw] sm:text-[1vw] text-zinc-400">(% still active 90 days after first missed installment)</span>
+          </div>
+        </div>
+      </div>
+      <p class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400 mt-[3vh]">
+        We do not maximize amount collected. A merchant who renegotiates into a longer plan
+        and stays active is worth more over 24 months than one who pays in full and leaves.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 9: BUSINESS MODEL ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center"
+           :class="8 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="8">
+    <div class="px-[8vw] w-full">
+      <div class="slide-accent-bar mb-[2vh]"></div>
+      <h2 class="text-[3.5vw] sm:text-[3vw] font-bold mb-[3vh]">A presentation layer, not a new engine</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-[2vw]">
+        <div class="kpi-card">
+          <div class="text-[2vw] sm:text-[1.6vw] font-bold text-[#009118] mb-[0.5vh]">R$0</div>
+          <div class="text-[1.3vw] sm:text-[1.1vw] text-zinc-600 dark:text-zinc-400">Marginal cost per self-service renegotiation</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[2vw] sm:text-[1.6vw] font-bold text-[#0079F2] mb-[0.5vh]">Existing</div>
+          <div class="text-[1.3vw] sm:text-[1.1vw] text-zinc-600 dark:text-zinc-400">Reads from contracts_overdue, renegotiated_contracts, regul_status_contrato</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[2vw] sm:text-[1.6vw] font-bold text-[#795EFF] mb-[0.5vh]">Existing</div>
+          <div class="text-[1.3vw] sm:text-[1.1vw] text-zinc-600 dark:text-zinc-400">LCM merchant profiles already generated since Jan 2026</div>
+        </div>
+      </div>
+      <div class="mt-[3vh] space-y-[1.2vh] text-[1.5vw] sm:text-[1.3vw] text-zinc-600 dark:text-zinc-300">
+        <p><strong>Revenue preserved:</strong> R$140M/year in GMV from retained merchants (5,000 merchant base case)</p>
+        <p><strong>Cost reduced:</strong> Each self-service renegotiation replaces an outbound call + consultancy touchpoint</p>
+        <p><strong>Collections team freed:</strong> Focus shifts to high-value, multi-contract merchants</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 10: WHY NOW ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center"
+           :class="9 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="9">
+    <div class="px-[8vw] w-full">
+      <div class="slide-accent-bar mb-[2vh]"></div>
+      <h2 class="text-[3.5vw] sm:text-[3vw] font-bold mb-[3vh]">Three things changed that make this timely</h2>
+      <div class="space-y-[2.5vh]">
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="text-[2.5vw] sm:text-[2vw] font-black text-[#0079F2]">1</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">LCM merchant profiles went live (Jan 2026)</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">AI-generated business profiles for every merchant -- commercial health, conversion funnels, trending items. We can now contextualize debt within business trajectory.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="text-[2.5vw] sm:text-[2vw] font-black text-[#795EFF]">2</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">Credit portfolio data infrastructure is mature</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">movilepay_credit_curated pipeline tracks contracts, overdue balances, renegotiations, installments. The data exists; the merchant-facing experience does not.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-[1.5vw]">
+          <div class="text-[2.5vw] sm:text-[2vw] font-black text-[#0D9488]">3</div>
+          <div>
+            <div class="text-[1.8vw] sm:text-[1.5vw] font-semibold">Churn from unresolved debt is now measurable</div>
+            <div class="text-[1.4vw] sm:text-[1.2vw] text-zinc-500 dark:text-zinc-400">merchants_history tracks status transitions including CHURN. The cost of inaction shows up in two ledgers: lost debt recovery and lost future GMV.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 11: TEAM ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center justify-center"
+           :class="10 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="10">
+    <div class="text-center px-[8vw]">
+      <div class="slide-accent-bar mx-auto mb-[2vh]"></div>
+      <h2 class="text-[4vw] sm:text-[3.5vw] font-bold mb-[3vh]">Team Marsala</h2>
+      <p class="text-[1.8vw] sm:text-[1.5vw] text-zinc-500 dark:text-zinc-400 max-w-[60vw] mx-auto mb-[3vh]">
+        A cross-functional team from iFood's fintech and merchant experience groups,
+        formed at the 2026 Bootcamp with deep access to credit, LCM, and merchant data systems.
+      </p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2vw] max-w-[60vw] mx-auto">
+        <div class="kpi-card">
+          <div class="text-[1.6vw] sm:text-[1.3vw] font-semibold">Credit Data</div>
+          <div class="text-[1.1vw] sm:text-[0.9vw] text-zinc-500 dark:text-zinc-400 mt-1">32 schemas, full read access</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[1.6vw] sm:text-[1.3vw] font-semibold">LCM Profiles</div>
+          <div class="text-[1.1vw] sm:text-[0.9vw] text-zinc-500 dark:text-zinc-400 mt-1">AI merchant representations</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[1.6vw] sm:text-[1.3vw] font-semibold">Entity Hub</div>
+          <div class="text-[1.1vw] sm:text-[0.9vw] text-zinc-500 dark:text-zinc-400 mt-1">Merchant identity graph</div>
+        </div>
+        <div class="kpi-card">
+          <div class="text-[1.6vw] sm:text-[1.3vw] font-semibold">Collections</div>
+          <div class="text-[1.1vw] sm:text-[0.9vw] text-zinc-500 dark:text-zinc-400 mt-1">Renegotiation workflows</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SLIDE 12: THE ASK ============================== -->
+  <section class="slide absolute inset-0 transition-opacity duration-200 flex items-center justify-center"
+           :class="11 === current ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+           data-slide-index="11"
+           style="background: linear-gradient(135deg, #0079F2 0%, #795EFF 60%, #0D9488 100%);">
+    <div class="text-center px-[8vw]">
+      <h2 class="text-[5vw] sm:text-[4.5vw] font-black text-white mb-[3vh]">The Ask</h2>
+      <div class="space-y-[2vh] max-w-[65vw] mx-auto">
+        <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-[2vw] text-left">
+          <div class="text-[1.8vw] sm:text-[1.5vw] font-bold text-white">1. Access to the credit collection API for renegotiation writes</div>
+          <div class="text-[1.3vw] sm:text-[1.1vw] text-white/70 mt-[0.5vh]">We read today; we need write access to commit renegotiation choices on the merchant's behalf.</div>
+        </div>
+        <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-[2vw] text-left">
+          <div class="text-[1.8vw] sm:text-[1.5vw] font-bold text-white">2. A pilot cohort of 500 overdue long-tail merchants</div>
+          <div class="text-[1.3vw] sm:text-[1.1vw] text-white/70 mt-[0.5vh]">Test self-service regularization vs. call-center-only for 90 days. Measure regularization rate and retention.</div>
+        </div>
+        <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-[2vw] text-left">
+          <div class="text-[1.8vw] sm:text-[1.5vw] font-bold text-white">3. Sponsorship to embed in Gestor de Pedidos</div>
+          <div class="text-[1.3vw] sm:text-[1.1vw] text-white/70 mt-[0.5vh]">Credit Clean is a notification + 3 screens. We need a home inside the merchant's existing daily tool.</div>
+        </div>
+      </div>
+      <div class="mt-[4vh]">
+        <span class="text-[1.4vw] sm:text-[1.2vw] text-white/60 font-medium">Team Marsala &middot; May 2026 &middot; Credit Clean</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== NAVIGATION ============================== -->
+
+  <!-- Click zones (desktop) -->
+  <button class="absolute left-0 top-0 w-1/4 h-full z-20 cursor-w-resize print:hidden hidden sm:block"
+          aria-label="Previous slide" @click="prev()"></button>
+  <button class="absolute right-0 top-0 w-1/4 h-full z-20 cursor-e-resize print:hidden hidden sm:block"
+          aria-label="Next slide" @click="next()"></button>
+
+  <!-- Bottom bar -->
+  <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between p-3 sm:p-4 z-20 print:hidden">
+    <button class="min-h-[44px] min-w-[44px] rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-sm inline-flex items-center justify-center text-lg font-bold text-zinc-600 dark:text-zinc-300"
+            aria-label="Previous" @click="prev()">&#8249;</button>
+    <div class="text-xs sm:text-sm text-zinc-500 bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-sm px-3 py-1 rounded-full"
+         x-text="`${current+1} / ${total}`"></div>
+    <button class="min-h-[44px] min-w-[44px] rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-sm inline-flex items-center justify-center text-lg font-bold text-zinc-600 dark:text-zinc-300"
+            aria-label="Next" @click="next()">&#8250;</button>
+  </div>
+
+  <!-- Top-right controls -->
+  <div class="absolute top-3 right-3 flex gap-2 z-20 print:hidden">
+    <button class="min-h-[44px] min-w-[44px] rounded-md bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-sm text-xs font-medium text-zinc-600 dark:text-zinc-300"
+            aria-label="Dark mode" @click="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
+      <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+    </button>
+    <button class="min-h-[44px] min-w-[44px] rounded-md bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-sm text-xs font-medium text-zinc-600 dark:text-zinc-300"
+            aria-label="Overview" @click="overview = true">
+      <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+    </button>
+    <button class="min-h-[44px] min-w-[44px] rounded-md bg-zinc-100/80 dark:bg-zinc-900/80 backdrop-blur-sm text-xs font-medium text-zinc-600 dark:text-zinc-300"
+            aria-label="Print" @click="window.print()">
+      <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+    </button>
+  </div>
+
+  <!-- Overview grid -->
+  <div x-show="overview" x-cloak
+       class="absolute inset-0 z-40 bg-white dark:bg-zinc-950 overflow-y-auto p-4 sm:p-8">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold">All slides</h2>
+      <button class="min-h-[44px] min-w-[44px] text-2xl" @click="overview = false">&times;</button>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+      <template x-for="(slide, i) in slides" :key="i">
+        <button class="aspect-[16/9] rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden hover:border-blue-400 text-left p-3"
+                @click="goto(i); overview = false;">
+          <div class="text-[10px] text-zinc-500 mb-1" x-text="`${i+1}. ${slide.type}`"></div>
+          <div class="text-sm font-medium" x-text="slide.title"></div>
+        </button>
+      </template>
+    </div>
+  </div>
+
+  <!-- Help overlay -->
+  <div x-show="showHelp" x-cloak
+       class="absolute inset-0 bg-black/70 z-50 flex items-center justify-center print:hidden"
+       @click="showHelp = false">
+    <div class="bg-white dark:bg-zinc-950 rounded-2xl p-6 max-w-md mx-4" @click.stop>
+      <h3 class="text-lg font-semibold mb-3">Keyboard shortcuts</h3>
+      <dl class="text-sm space-y-2">
+        <div class="flex justify-between"><dt>Next slide</dt><dd><kbd class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs">&#8594;</kbd> <kbd class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs">Space</kbd></dd></div>
+        <div class="flex justify-between"><dt>Previous slide</dt><dd><kbd class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs">&#8592;</kbd></dd></div>
+        <div class="flex justify-between"><dt>First / last</dt><dd><kbd class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs">Home</kbd> <kbd class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs">End</kbd></dd></div>
+        <div class="flex justify-between"><dt>Overview</dt><dd><kbd class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs">O</kbd></dd></div>
+        <div class="flex justify-between"><dt>Close overlay</dt><dd><kbd class="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs">Esc</kbd></dd></div>
+      </dl>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Dark mode init
+if (localStorage.getItem('darkMode') === 'true' ||
+    (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.documentElement.classList.add('dark');
+}
+
+function slideshow() {
+  return {
+    current: 0,
+    total: 0,
+    overview: false,
+    showHelp: false,
+    slides: [],
+    init() {
+      this.slides = JSON.parse(document.getElementById('slides-data').textContent);
+      this.total = this.slides.length;
+      const m = location.hash.match(/^#slide-(\d+)$/);
+      if (m) this.current = Math.max(0, Math.min(this.total - 1, parseInt(m[1]) - 1));
+      this.bindSwipe();
+      // Init chart when on the chart slide
+      this.$watch('current', (val) => {
+        if (val === 6) this.$nextTick(() => initFunnelChart());
+      });
+      if (this.current === 6) this.$nextTick(() => initFunnelChart());
+    },
+    next() { if (this.current < this.total - 1) { this.current++; this.syncHash(); } },
+    prev() { if (this.current > 0) { this.current--; this.syncHash(); } },
+    goto(i) { this.current = i; this.syncHash(); },
+    syncHash() { history.replaceState(null, '', '#slide-' + (this.current + 1)); },
+    onKey(e) {
+      if (this.overview) { if (e.key === 'Escape') this.overview = false; return; }
+      if (this.showHelp) { if (e.key === 'Escape') this.showHelp = false; return; }
+      if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); this.next(); }
+      if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); this.prev(); }
+      if (e.key === 'Home') { e.preventDefault(); this.goto(0); }
+      if (e.key === 'End') { e.preventDefault(); this.goto(this.total - 1); }
+      if (e.key === 'o' || e.key === 'O') this.overview = true;
+      if (e.key === '?') this.showHelp = !this.showHelp;
+    },
+    bindSwipe() {
+      let startX = 0, startY = 0;
+      this.$el.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+      }, { passive: true });
+      this.$el.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          dx < 0 ? this.next() : this.prev();
+        }
+      }, { passive: true });
+    },
+  };
+}
+
+function initFunnelChart() {
+  const el = document.getElementById('funnel-chart');
+  if (!el || el.dataset.initialized) return;
+  el.dataset.initialized = 'true';
+
+  const isDark = document.documentElement.classList.contains('dark');
+  const chart = echarts.init(el);
+
+  const data = [
+    { name: 'Catalog Visits', value: 768 },
+    { name: 'Viewed Items (71.6%)', value: 550 },
+    { name: 'Added to Cart (43.1%)', value: 331 },
+    { name: 'Checkout (41.4%)', value: 318 },
+    { name: 'Purchase (9.9%)', value: 76 },
+  ];
+
+  chart.setOption({
+    color: CHART_COLOR_LIST,
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: isDark ? '#18181B' : '#FFFFFF',
+      borderColor: isDark ? '#3F3F46' : '#E4E4E7',
+      textStyle: { color: isDark ? '#A1A1AA' : '#71717A' },
+      formatter: (p) => `${p.name}<br/><strong>${p.value.toLocaleString('pt-BR')} visitors</strong>`
+    },
+    series: [{
+      type: 'funnel',
+      left: '10%',
+      width: '80%',
+      top: '5%',
+      bottom: '5%',
+      min: 0,
+      max: 800,
+      minSize: '15%',
+      maxSize: '100%',
+      sort: 'descending',
+      gap: 4,
+      label: {
+        show: true,
+        position: 'inside',
+        fontSize: Math.max(12, window.innerWidth * 0.012),
+        color: '#fff',
+        fontWeight: 600,
+      },
+      itemStyle: { borderWidth: 0, borderRadius: 4 },
+      data: data
+    }]
+  });
+
+  window.addEventListener('resize', () => chart.resize());
+}
+</script>
+
+</body>
+</html>
